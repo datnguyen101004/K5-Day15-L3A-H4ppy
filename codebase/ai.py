@@ -1,25 +1,10 @@
-"""Nối model — chỗ DUY NHẤT trong bản chạy thử gọi model AI. NHÓM VIẾT phần gọi model thật.
-
-Hợp đồng (giữ nguyên để khung đo được token):
-    call_model(system: str, user: str) -> dict với 4 khoá
-        "text":       str   chữ model trả về
-        "model":      str   tên model đã gọi (để tra giá ở bảng giá model)
-        "tokens_in":  int   số token vào, lấy từ trường usage trong phản hồi API — KHÔNG ước lượng
-        "tokens_out": int   số token ra, gồm cả token suy luận / suy nghĩ nếu API tính riêng
-    @model_call (từ tracing.py) tự ghi mỗi lần gọi vào trace; agent.py gọi call_model bao nhiêu lần
-    cũng được, khung tự cộng token.
-    Lỗi gọi model (hết lượt, sai key, mất mạng): cứ để exception bay ra — khung ghi lỗi vào cột error.
-
-Chế độ giả (mặc định khi .env chưa có MODEL_PROVIDER, hoặc MODEL_PROVIDER=fake):
-    chạy kịch bản dạy lại theo từng đoạn, model "fake", token 0 — để thử luồng CP2.
-    Lượt `run.py eval` / `run.py simulate` chạy bằng model giả KHÔNG được tính.
-
-Nối model thật: điền .env (chép từ .env.example), rồi viết nhánh gọi API ở dưới theo docs/connect-model.md
-(có ví dụ OpenAI, Claude, model chạy trên máy, và cách nối nhà cung cấp khác). Không dán API key vào file này.
-"""
+"""Gọi model qua Chat Completions và ghi số token thực tế từ phản hồi API."""
 import json
 import os
 import re
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlsplit
+from urllib.request import Request, urlopen
 
 from tracing import model_call
 
@@ -40,9 +25,11 @@ def load_env(path=os.path.join(ROOT, ".env")):
 
 
 load_env()
-MODEL_PROVIDER = (os.environ.get("MODEL_PROVIDER") or "fake").strip().lower()
-MODEL_NAME = (os.environ.get("MODEL_NAME") or "").strip()
-API_KEY = (os.environ.get("API_KEY") or "").strip()
+MODEL_PROVIDER = (os.getenv("MODEL_PROVIDER", "").strip()
+                  or os.getenv("LLM_PROVIDER", "").strip() or "fake").lower()
+MODEL_NAME = os.getenv("MODEL_NAME", "").strip()
+API_KEY = os.getenv("API_KEY", "").strip() or os.getenv("OPENAI_API_KEY", "").strip()
+API_BASE = os.getenv("OPENAI_API_BASE", "").strip().rstrip("/") or "https://api.openai.com/v1"
 
 
 MOCK_QUESTIONS = {
@@ -82,36 +69,73 @@ def _fake_study_reply(user: str) -> str:
     """Mô phỏng các nhánh CP2. Không đánh giá được lời diễn đạt tương đương."""
     request = json.loads(user)
     passage = request["passage"]
-    explanations = request["explanations"]
-    latest = " ".join(explanations[-1].casefold().split()) if explanations else ""
+    latest = " ".join(request["learner_reply"].casefold().split())
     for reason, pattern in MOCK_REFUSALS:
         if re.search(pattern, latest):
-            return json.dumps({"action": "decline", "reason": reason})
+            return json.dumps({"core_covered": False, "has_error": False, "reason": reason})
 
     opening, followup = MOCK_QUESTIONS.get(
         passage["code"],
         ("Bạn thử giải thích ý cốt lõi của đoạn bài cho mình nhé?", "Bạn có thể nói rõ một bước trong lập luận không?"),
     )
-    if not explanations:
-        action, text = "ask", opening
-    elif latest == " ".join(passage["text"].casefold().split()):
-        action, text = "confirm", ""
-    elif request["followups_remaining"] > 0:
-        action, text = "ask", followup
+    core_covered = latest == " ".join(passage["text"].casefold().split())
+    text = ""
+    if not request["turn"]:
+        text = opening
+    elif not core_covered and request["followups_remaining"] > 0:
+        text = followup
         if request["turn"] == 2:
             text = "Bạn thử nêu một ví dụ và giải thích vì sao ví dụ đó phù hợp với ý cốt lõi nhé?"
-    else:
-        action, text = "review", ""
-    return json.dumps({"action": action, "text": text}, ensure_ascii=False)
+    return json.dumps({"core_covered": core_covered, "has_error": False, "text": text}, ensure_ascii=False)
+
 
 
 @model_call
 def call_model(system: str, user: str) -> dict:
     if MODEL_PROVIDER == "fake":
         return {"text": _fake_study_reply(user), "model": "fake", "tokens_in": 0, "tokens_out": 0}
+    if MODEL_PROVIDER != "openai":
+        raise ValueError(f"MODEL_PROVIDER={MODEL_PROVIDER} chưa được hỗ trợ. Xem docs/connect-model.md.")
+    if not MODEL_NAME or not API_KEY:
+        raise ValueError("Cần đặt MODEL_NAME và API_KEY hoặc OPENAI_API_KEY trong .env.")
 
-    # NHÓM VIẾT: gọi model thật ở đây (theo MODEL_PROVIDER, MODEL_NAME, API_KEY) rồi trả đúng 4 khoá.
-    # Ví dụ chép được cho từng nhà cung cấp: docs/connect-model.md mục 2.
-    raise NotImplementedError(
-        "chưa viết phần gọi model thật cho MODEL_PROVIDER=%s trong codebase/ai.py — xem docs/connect-model.md"
-        % MODEL_PROVIDER)
+    endpoint = urlsplit(API_BASE)
+    if endpoint.scheme != "https" or not endpoint.hostname or endpoint.username or endpoint.query or endpoint.fragment:
+        raise ValueError("OPENAI_API_BASE phải là URL HTTPS cơ sở, ví dụ https://api.openai.com/v1.")
+
+    payload = {
+        "model": MODEL_NAME,
+        "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
+        "response_format": {"type": "json_object"},
+    }
+    if endpoint.hostname.endswith(".maas.aliyuncs.com") and MODEL_NAME.startswith("qwen"):
+        payload["enable_thinking"] = False
+
+    request = Request(
+        f"{API_BASE}/chat/completions",
+        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+    )
+    request.add_unredirected_header("Authorization", f"Bearer {API_KEY}")
+    try:
+        with urlopen(request, timeout=45) as response:
+            data = json.load(response)
+    except HTTPError as exc:
+        exc.close()
+        raise RuntimeError(f"Model API trả HTTP {exc.code}. Xem docs/connect-model.md.") from None
+    except URLError as exc:
+        raise RuntimeError("Không kết nối được model API. Kiểm tra mạng và OPENAI_API_BASE.") from exc
+
+    try:
+        text = data["choices"][0]["message"]["content"]
+        model = data["model"]
+        usage = data["usage"]
+        tokens_in = usage["prompt_tokens"]
+        tokens_out = usage["completion_tokens"]
+    except (IndexError, KeyError, TypeError) as exc:
+        raise RuntimeError("Model API trả phản hồi thiếu nội dung hoặc số token.") from exc
+    if not isinstance(text, str) or not text.strip() or not isinstance(model, str) or not model:
+        raise RuntimeError("Model API trả nội dung hoặc tên model không hợp lệ.")
+    if type(tokens_in) is not int or type(tokens_out) is not int or min(tokens_in, tokens_out) <= 0:
+        raise RuntimeError("Model API trả số token không hợp lệ.")
+    return {"text": text, "model": model, "tokens_in": tokens_in, "tokens_out": tokens_out}

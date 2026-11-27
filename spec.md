@@ -101,7 +101,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
   | G11 — giải thích vì sao | Nhánh "chốt" và "sửa đúng": luôn nói "vì đoạn `<mã đoạn>` của bài nói …" khi xác nhận hay sửa, để học viên mở đúng đoạn kiểm lại |
   | G1 — làm rõ hệ thống làm được gì | Câu mở đầu của bạn học AI nói rõ: "mình chỉ hỏi về đoạn `<mã đoạn>`, không làm hộ bài kiểm tra"; nhánh từ chối đưa học viên về việc giải thích đoạn bài. Kiểm bằng câu `tu_choi` |
 
-- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật: CP2 chạy **chế độ giả** (`MODEL_PROVIDER=fake`, token 0) với các đoạn minh họa trong `data/passages.csv`. Nối model thật và đối chiếu các đoạn minh họa với bài pre-class ở CP3.
+- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — CP3 gọi `qwen3.7-plus` qua Alibaba Cloud Token Plan. `get_passage` đọc `data/passages.csv`, trong đó `A4-01` là đoạn minh họa CP2. Chế độ giả ngoại tuyến chạy kịch bản cố định với token 0.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 
@@ -158,6 +158,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 | 27/11 trước 19:30 | Bằng chứng đầu: đào `data/preclass` (`evidence/count.py`, `evidence/data-mining.md`) và khảo sát 20 học viên L3 (`evidence/survey/`); điền `evidence/summary.md`, `canvas.md` dòng 4, §1 dòng bằng chứng | Issue #2 — CP2 cần số đầu tiên + 1 trích dẫn |
 | 28/11 trước 10:00 | Data card bản đủ (nguồn bài pre-class từng mã đoạn, thêm `check_questions.csv` và khảo sát); thêm `data/check_questions.csv` 12 câu trước / sau phiên; `cost/personas.yaml` thay số ví dụ bằng số có nguồn (data 144 / 431 / 721, khảo sát câu 3, câu 5) | Issue #16 — metric `tra_loi_dung_sau_phien` cần câu kiểm tra; mô phỏng chi phí cần persona có nguồn |
 | 27/11 sau 19:30 | Điền §0 (luồng hiện tại từ nhật ký pre-class), §1, §2 (bảng Impact A4 / A1, thừa số có nguồn), §3 (Betty's Brain, Khanmigo), §6; README "Dùng AI vào việc gì", `docs/ai-usage.md` | Issue #10 — CP3 cần §0–§7; số lấy từ `evidence/data-mining.md` và khảo sát C3, C4, C6, C8, C9 |
+| 28/11 (CP3) | Nối `qwen3.7-plus`, đo token từ API và dùng đoạn gốc để quyết định hỏi vặn hoặc chốt. | Issue #11 · B01 cần nhận ra cách diễn đạt tương đương, B10 cần bác bỏ khẳng định ngoài đoạn. |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
