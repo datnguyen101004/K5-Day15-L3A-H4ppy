@@ -8,12 +8,12 @@
 | | |
 |---|---|
 | Dùng để làm gì | Nguồn sự thật cho công cụ `get_passage` (`codebase/tools.py`): AI đối chiếu lời giải thích của học viên với đoạn gốc, rồi hỏi vặn hoặc chốt kiến thức đúng · nguồn cho câu thử trong `eval/benchmark.csv` |
-| Từ đâu | Nhóm tự viết lại (tóm ý, không chép nguyên văn) từ bài pre-class của khoá AI20K, buổi Day__ — bài: __ |
-| Xử lý những bước gì | Chọn __ khái niệm cốt lõi · mỗi khái niệm viết thành 1 đoạn ngắn (≤ 120 chữ) · gán mã đoạn dạng `D<ngày>-<số>` (vd `D05-01`) · mỗi đoạn kèm 1–3 "ý cốt lõi" để đối chiếu · người thứ hai trong nhóm soát lại so với bài gốc |
-| Số dòng / số đoạn | __ đoạn *(chốt khi xong issue #3)* |
+| Từ đâu | Codex soạn 5 đoạn minh họa dựa trên tên và nội dung khái niệm công khai trong PR #5, cùng một đoạn mẫu CP2 về dữ liệu huấn luyện và đánh giá (`A4-01`). |
+| Xử lý những bước gì | Mỗi khái niệm có một đoạn ngắn chứa các ý cốt lõi. Mã khái niệm khớp đầu vào bộ đánh giá. Giữ mã `A4-01` để chạy demo cũ. Soạn trực tiếp, không sinh bằng script hoặc seed. |
+| Số dòng / số đoạn | 6 đoạn |
 | Phiên bản / ngày lấy | v1 · 27/11/2026 |
-| Nhãn | Viết lại từ tài liệu thật của khoá (không phải `synthetic`) — **không phải bằng chứng pain** |
-| Giới hạn | Chỉ phủ vài khái niệm của một buổi, không phủ cả bài · bản viết lại có thể lược mất sắc thái so với video gốc · ý cốt lõi do nhóm chọn, có thể lệch với điều giảng viên nhấn mạnh |
+| Nhãn | `synthetic` · dữ liệu minh họa để chạy thử CP2 |
+| Giới hạn | Chưa có người thứ hai đối chiếu với video hoặc tài liệu pre-class. Nhóm cần soát nội dung với bài gốc trước khi dùng để đánh giá model thật. |
 
 ## Dataset 2 · Nhật ký hành vi trang pre-class (`data/preclass/` do BTC cấp)
 
