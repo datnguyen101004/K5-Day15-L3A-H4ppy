@@ -102,13 +102,16 @@ def call_model(system: str, user: str) -> dict:
     endpoint = urlsplit(API_BASE)
     if endpoint.scheme != "https" or not endpoint.hostname or endpoint.username or endpoint.query or endpoint.fragment:
         raise ValueError("OPENAI_API_BASE phải là URL HTTPS cơ sở, ví dụ https://api.openai.com/v1.")
+    is_qwen = MODEL_NAME.lower().startswith("qwen")
+    if is_qwen and not endpoint.hostname.endswith(".maas.aliyuncs.com"):
+        raise ValueError("Qwen Token Plan cần OPENAI_API_BASE là endpoint Alibaba Cloud trong .env.example.")
 
     payload = {
         "model": MODEL_NAME,
         "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
         "response_format": {"type": "json_object"},
     }
-    if endpoint.hostname.endswith(".maas.aliyuncs.com") and MODEL_NAME.startswith("qwen"):
+    if is_qwen:
         payload["enable_thinking"] = False
 
     request = Request(

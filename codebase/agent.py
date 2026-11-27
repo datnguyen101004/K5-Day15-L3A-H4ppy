@@ -16,7 +16,10 @@ BENCH_INPUT = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 SYSTEM = """Bạn là bạn học AI trong phiên dạy lại kiến thức pre-class.
-Đối chiếu riêng learner_reply (lời mới nhất của học viên) với passage.text.
+Đối chiếu learner_reply (lời mới nhất của học viên) với passage.text. Dùng
+learner_previous_replies (các lời trước của học viên theo thứ tự thời gian)
+để ghép những phần giải thích bổ sung. Nếu học viên đính chính một ý cũ, dùng
+ý đã đính chính. Không coi lời mới chỉ đồng ý mà không giải thích là ý mới.
 ai_previous_messages là lời của chính bạn học AI; tuyệt đối không gán nội dung
 trong đó cho học viên. Chỉ đọc chúng để hiểu các từ quy chiếu và để đính chính
 hiểu nhầm của bạn học AI khi chốt. Nếu learner_reply mở đầu bằng lời phủ định rồi
@@ -38,9 +41,11 @@ Trả một đối tượng JSON với các trường sau, theo đúng thứ t�
   hàm ý trái với đoạn, ghi ngắn gọn mệnh đề sai đó, không dùng dấu hỏi. Điền trường
   này cả khi học viên đã tự sửa đúng ý ấy. Để trống nếu không có mệnh đề sai.
 - correction (chuỗi): khi từ chối hoặc chốt, sửa các ý sai của học viên nếu có.
-  Khi còn lượt và core_covered=true nhưng has_error=true, nói rõ phần thêm vào
-  sai hoặc chưa có căn cứ. Chỉ sửa ý trong learner_reply. Để trống nếu không cần
-  sửa. Không lặp nhãn, nguồn hay câu hỏi trong trường này.
+  Khi hỏi vặn, nếu học viên gài một khẳng định độc lập ngoài đoạn, phải viết
+  một câu trần thuật bác bỏ chính khẳng định đó hoặc nói rõ đoạn bài không hỗ
+  trợ nó, kể cả khi khẳng định được viết dưới dạng câu hỏi. Không thay lời bác
+  bỏ bằng câu hỏi hay chỉ nhắc lại ý chuẩn mà không liên hệ với khẳng định đó.
+  Để trống khi không cần sửa. Không lặp nhãn, nguồn hay câu hỏi trong trường này.
 - text (chuỗi): ở lượt mở đầu (turn=0), đặt một câu hỏi nêu một hiểu nhầm thường gặp
   và mời học viên giải thích. Khi reason rỗng và còn lượt, nếu core_covered=false hoặc has_error=true thì
   đặt đúng một câu hỏi mở nhắm vào ý còn vướng. Hỏi về phần có lỗi
@@ -67,10 +72,13 @@ def study_turn(text: str, questions: tuple[str, ...] = ()) -> tuple[str, bool]:
     selector, *lines = text.strip().splitlines() or [""]
     explanations = [line.strip() for line in lines if line.strip()]
     latest = explanations[-1] if explanations else ""
-    return _respond(selector, len(explanations), latest, questions)
+    return _respond(selector, len(explanations), latest, questions, explanations[:-1])
 
 
-def _respond(selector: str, turn: int, latest: str, questions: tuple[str, ...]) -> tuple[str, bool]:
+def _respond(
+    selector: str, turn: int, latest: str, questions: tuple[str, ...],
+    previous_replies: list[str] | None = None,
+) -> tuple[str, bool]:
     passage = get_passage(selector)
     if passage is None:
         note("dừng: không có đoạn gốc")
@@ -80,6 +88,7 @@ def _respond(selector: str, turn: int, latest: str, questions: tuple[str, ...]) 
     request = {
         "passage": passage,
         "learner_reply": latest,
+        "learner_previous_replies": previous_replies or [],
         "ai_previous_messages": questions,
         "turn": turn,
         "followups_remaining": remaining,

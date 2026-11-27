@@ -22,7 +22,8 @@ ngoại tuyến với token 0. Nếu không đặt provider nào, repo dùng ch�
 
 Backend gửi JSON tới `OPENAI_API_BASE/chat/completions`. Nếu dùng OpenAI trực tiếp,
 để trống `OPENAI_API_BASE` và đặt model hỗ trợ JSON mode cùng key OpenAI.
-Với Qwen trên Alibaba Cloud, tắt chế độ suy nghĩ để nhận JSON dùng cho quyết định dạy lại.
+Với Qwen, phải đặt endpoint Alibaba Cloud trong `.env.example`: thiếu hoặc dùng
+host khác sẽ bị chặn trước khi gửi request. Qwen tắt chế độ suy nghĩ để trả JSON.
 `@model_call` ghi model trả về cùng `usage.prompt_tokens` và `usage.completion_tokens` từ API.
 
 ## Thử kết nối
