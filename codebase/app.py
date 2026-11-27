@@ -49,10 +49,6 @@ def main() -> int:
         tracing.begin("app")
         try:
             output, waiting = study_turn("\n".join(transcript + [text]), questions)
-        except NotImplementedError as e:
-            tracing.end()
-            print("Chưa nối model: %s" % e)
-            return 1
         except Exception as e:  # lỗi gọi model: báo rồi cho hỏi tiếp
             tracing.end()
             print("[lỗi] %s: %s" % (type(e).__name__, e))

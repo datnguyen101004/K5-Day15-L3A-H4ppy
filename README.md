@@ -83,8 +83,9 @@ Nhóm dùng stack khác (Node, Streamlit, notebook…): sửa hàm `run_app()` t
 
 | Thành phần | Thật / Giả | Ghi chú |
 |---|---|---|
-| Lời gọi AI ở quyết định trung tâm | **Thật** (bắt buộc từ CP3) | Model: ____ |
-|  |  |  |
+| Lời gọi AI ở quyết định trung tâm | **Thật** | `qwen3.7-plus` qua Alibaba Cloud Token Plan. Token lấy từ `usage` của API. |
+| Tra cứu đoạn bài `get_passage` | **Thật** | Đọc đoạn gốc từ `data/passages.csv`, gồm các đoạn diễn giải pre-class và đoạn minh họa CP2 `A4-01`. |
+| Chạy thử ngoại tuyến | **Giả** | `MODEL_PROVIDER=fake` chạy kịch bản cố định với token 0. |
 
 ## Dùng AI vào việc gì
 
