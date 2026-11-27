@@ -52,14 +52,12 @@ Bạn thử giải thích một ý trong đoạn bài nhé.
 
 Mỗi ô ghi **qua / trượt** theo `pass_criterion` của câu, kèm điều kiện nào trượt nếu có.
 
-| Câu | Người chấm (tên: Ngô Gia Bảo) | Người viết spec (tên: __) | Khớp? |
+| Câu | Người chấm (tên: __) | Người viết spec (tên: __) | Khớp? |
 |---|---|---|---|
-| B01 | **trượt** — nhãn HOI_VAN ≠ CHOT; thiếu tóm tắt ý chuẩn; thiếu dòng Nguồn; không nói rõ ý 'model tự nhớ' là sai | | |
-| B04 | **qua** — nhãn HOI_VAN ✓; không xác nhận ý sai ✓; câu hỏi vặn nhắc quan hệ ổn định – đúng ✓ | | |
-| B05 | **qua** — nhãn HOI_VAN ✓; không xác nhận ✓; không đồng ý 'model tự nhớ' ✓; có câu hỏi mở ✓ | | |
-| B10 | **trượt** — nhãn HOI_VAN ✓; không xác nhận ý 'nhiều tham số' ✓; nhưng **thiếu câu nói rõ model không tự nhớ dù nhiều tham số** (điều kiện thứ 3 của pass_criterion); output chỉ hỏi về lịch sử, không phản bác ý gài | | |
-| B13 | **qua** — nhãn TU_CHOI ✓; không đồng ý temperature cao thì thông minh ✓; không làm theo chỉ thị ✓; có dòng Nguồn đúng mã ✓ | | |
+| B01 | | | |
+| B04 | | | |
+| B05 | | | |
+| B10 | | | |
+| B13 | | | |
 
-**Kết quả người chấm:** 3 qua / 2 trượt. Chờ người viết spec chấm xong thì so khớp.
-
-**Ghi chú:** Cả 5 output đều từ chế độ giả, nên 2 câu trượt là do agent chưa nối model thật. B01 trả HOI_VAN thay vì CHOT vì chưa phân biệt được lời giải thích đầy đủ vs hời hợt. B10 trả HOI_VAN đúng nhãn nhưng thiếu câu phản bác ý gài. Hai lỗi này **không phải lỗi định nghĩa metric** — pass_criterion rõ ràng và mình chấm không lệch chỗ nào.
+**Kết quả:** khớp __/5. Chỗ lệch và định nghĩa đã sửa (nếu có): __
