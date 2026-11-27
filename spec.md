@@ -15,7 +15,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 - Việc họ cố làm xong (`động từ + đối tượng + bối cảnh`, không có chữ AI):
 - Hôm nay họ giải bằng gì, hỏng ở đâu, vì sao chưa bỏ:
 - Pain (KHÔNG chữ AI): ai — đang làm gì — vướng đâu — hậu quả gì:
-- Bằng chứng — số chính + kết luận (chi tiết: `evidence/summary.md`): __
+- Bằng chứng — số chính + kết luận (chi tiết: `evidence/summary.md`): data pre-class cho thấy 354/431 (82,1%) học viên mở video nhưng không nộp câu kiểm tra pre/post nào, và 245/276 (88,8%) chưa từng đáp lại bạn học AI. Khảo sát 20 học viên L3 cho thấy 14/20 (70%) phải hỏi hoặc xem lại kiến thức pre-class ở buổi thực hành. Kết luận: học viên xem xong nhưng không tự kiểm mức hiểu, đến lúc làm lab mới lộ ra; giả thuyết gần đạt nhưng chưa đạt đúng ngưỡng ≥3/4.
 
 ## §2. Impact & quyết định chọn *(guide 1.3)*
 
@@ -124,6 +124,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 |---|---|---|
 | 27/11 trước 19:30 *(bản CP2, mốc gốc)* | Điền header, §4 (lát cắt, sơ đồ, hình dạng workflow, công cụ `get_passage`, mức tự động, nguyên tắc G10 / G11 / G1), `data/DATA_CARD.md` bản đầu | Issue #4 — đưa lát cắt đã chốt ở `canvas.md` dòng 5–6 vào spec. Mọi thay đổi **sau** dòng này ghi tiếp bên dưới |
 | 27/11 trước 19:30 | Đồng bộ luồng A4 với hợp đồng đầu vào/đầu ra của bộ đánh giá và bổ sung đoạn minh họa theo mã khái niệm | Issue #3 và PR #5 — bộ đánh giá gửi mã khái niệm và đọc nhãn quyết định ở dòng đầu |
+| 27/11 trước 19:30 | Bằng chứng đầu: đào `data/preclass` (`evidence/count.py`, `evidence/data-mining.md`) và khảo sát 20 học viên L3 (`evidence/survey/`); điền `evidence/summary.md`, `canvas.md` dòng 4, §1 dòng bằng chứng | Issue #2 — CP2 cần số đầu tiên + 1 trích dẫn |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
