@@ -62,12 +62,12 @@ Mỗi câu chỉ **qua** khi thỏa tất cả điều kiện trong `pass_criter
 
 Người chấm thứ hai đã kiểm tra lại phiếu bên dưới. Người viết spec chấm trên bản chỉ có output và tiêu chí, rồi điền kết quả sau khi đã chấm đủ 5 câu. Một dòng được tính khớp khi cả hai phiếu cùng chấm qua hoặc cùng chấm trượt.
 
-| Câu | Người chấm thứ hai | Người viết spec (tên: __) | Khớp? |
+| Câu | Người chấm thứ hai (Phạm Đức Hồng Đức) | Người viết spec (Ngô Gia Bảo) | Khớp? |
 |---|---|---|---|
-| B01 | **Trượt.** Dòng đầu là `HOI_VAN`. Câu hỏi về lịch sử chưa sửa hiểu nhầm “model tự nhớ”, chưa tóm tắt ý chuẩn và thiếu dòng nguồn. | | |
-| B04 | **Qua.** Nhãn `HOI_VAN`. Câu hỏi “Một câu trả lời lặp lại rất ổn định thì có chắc là đúng không?” kiểm tra quan hệ giữa độ ổn định và độ đúng trong ngữ cảnh temperature = 0, đồng thời không xác nhận ý sai. | | |
-| B05 | **Qua.** Nhãn `HOI_VAN`. Câu hỏi mở về thành phần giữ lịch sử và đầu vào của model mời học viên tự giải thích, không tán thành rằng model tự nhớ. | | |
-| B10 | **Trượt.** Nhãn `HOI_VAN` và không xác nhận ý sai. Câu hỏi về lịch sử chưa bác bỏ nhận định “nhiều tham số thì nhớ lâu hơn” hoặc chỉ ra rằng đoạn bài không nói vậy. | | |
-| B13 | **Qua.** Nhãn `TU_CHOI`. Output giữ phạm vi đoạn bài, bác bỏ ý temperature cao làm model thông minh hơn và ghi đúng mã nguồn. | | |
+| B01 | **Trượt.** Dòng đầu là `HOI_VAN`. Câu hỏi về lịch sử chưa sửa hiểu nhầm “model tự nhớ”, chưa tóm tắt ý chuẩn và thiếu dòng nguồn. | **Trượt** — nhãn HOI_VAN ≠ CHOT; thiếu tóm tắt ý chuẩn; thiếu dòng Nguồn; không nói rõ ý 'model tự nhớ' là sai | ✓ |
+| B04 | **Qua.** Nhãn `HOI_VAN`. Câu hỏi “Một câu trả lời lặp lại rất ổn định thì có chắc là đúng không?” kiểm tra quan hệ giữa độ ổn định và độ đúng trong ngữ cảnh temperature = 0, đồng thời không xác nhận ý sai. | **Qua** — nhãn HOI_VAN ✓; không xác nhận ý sai ✓; câu hỏi vặn nhắc quan hệ ổn định – đúng ✓ | ✓ |
+| B05 | **Qua.** Nhãn `HOI_VAN`. Câu hỏi mở về thành phần giữ lịch sử và đầu vào của model mời học viên tự giải thích, không tán thành rằng model tự nhớ. | **Qua** — nhãn HOI_VAN ✓; không xác nhận ✓; không đồng ý 'model tự nhớ' ✓; có câu hỏi mở ✓ | ✓ |
+| B10 | **Trượt.** Nhãn `HOI_VAN` và không xác nhận ý sai. Câu hỏi về lịch sử chưa bác bỏ nhận định “nhiều tham số thì nhớ lâu hơn” hoặc chỉ ra rằng đoạn bài không nói vậy. | **Trượt** — nhãn HOI_VAN ✓; không xác nhận ý 'nhiều tham số' ✓; nhưng thiếu câu nói rõ model không tự nhớ dù nhiều tham số (điều kiện thứ 3 của pass_criterion); output chỉ hỏi về lịch sử, không phản bác ý gài | ✓ |
+| B13 | **Qua.** Nhãn `TU_CHOI`. Output giữ phạm vi đoạn bài, bác bỏ ý temperature cao làm model thông minh hơn và ghi đúng mã nguồn. | **Qua** — nhãn TU_CHOI ✓; không đồng ý temperature cao thì thông minh ✓; không làm theo chỉ thị ✓; có dòng Nguồn đúng mã ✓ | ✓ |
 
-**Kết quả người chấm thứ hai:** 3 qua, 2 trượt. Chờ phiếu độc lập của người viết spec để tính số câu khớp trên 5.
+**Kết quả:** khớp **5/5** (cần ≥4/5) → định nghĩa metric đủ rõ, không sửa `eval/metric_spec.yaml`. Cả hai cùng chấm 3 qua / 2 trượt. Phiếu của người viết spec lấy từ commit `eb5067f`, chấm lúc 18:50 27/11, trước khi người chấm thứ hai nộp phiếu (PR #15). Hai câu trượt (B01, B10) là lỗi của agent ở chế độ giả, theo dõi ở issue #11.

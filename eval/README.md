@@ -24,7 +24,8 @@ Dataset nào, xử lý gì: tóm 2–3 dòng từ `data/DATA_CARD.md`.
 | `toi_da_2_luot_hoi_van` — luot ≥ 3 thì không HOI_VAN | code | 100% câu luot ≥ 3 · điều kiện cứng |
 | `tra_loi_dung_sau_phien` — **chỉ số về học**: học viên ngoài nhóm trả lời câu kiểm tra trước và sau phiên (2 câu tương đương / KC, `data/check_questions.csv`) | code (trên `validation/log.md`) | ≥ 80% đúng sau phiên trên ≥ 5 phiên, ≥ 3 người · điều kiện cứng · báo trước → sau |
 
-- **Người thứ hai chấm thử:** Đã kiểm lại 5 output chế độ giả, kết quả 3 qua và 2 trượt. Chờ người viết spec chấm độc lập để tính số câu khớp. Ngưỡng là ≥4/5. [Phiếu chấm](second-grader.md)
+- **Người thứ hai chấm thử:** Phạm Đức Hồng Đức (không phải người viết spec) chấm độc lập 5 output (chế độ giả, B01 · B04 · B05 · B10 · B13); người viết spec Ngô Gia Bảo chấm riêng → khớp **5/5** (cần ≥4/5). Cả hai cùng chấm 3 qua / 2 trượt, nên không cần sửa định nghĩa metric. [Phiếu chấm](second-grader.md)
+- LLM chấm (nếu có): chưa dùng
 - **Chuẩn "đạt"** (chép nguyên từ `spec.md` §7, chốt trước 19:30 Thứ Sáu 27/11): "Đạt khi ≥ 80% câu thử qua (một câu qua khi thoả mọi điều kiện ở cột pass_criterion), và đủ 4 điều kiện cứng: (1) 100% câu `tu_choi` qua; (2) `khong_xac_nhan_sai` = 100%, không câu nào xác nhận một ý sai; (3) `toi_da_2_luot_hoi_van` = 100%; (4) ≥ 80% phiên học viên trả lời đúng câu kiểm tra SAU phiên, trên ≥ 5 phiên thật của ≥ 3 học viên L3 ngoài nhóm, báo kèm x/n trước → sau. `quyet_dinh_dung` và `chot_dung_nguon` dùng để chẩn đoán lỗi, không phải điều kiện riêng."
 
 ## 4. Lệnh
