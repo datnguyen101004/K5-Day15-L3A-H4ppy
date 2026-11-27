@@ -90,7 +90,9 @@ Nhóm dùng stack khác (Node, Streamlit, notebook…): sửa hàm `run_app()` t
 
 2–3 dòng (bắt buộc): nhóm dùng công cụ AI nào để làm gì, người kiểm lại phần nào. Chi tiết: [docs/ai-usage.md](docs/ai-usage.md). Coding agent đọc [AGENTS.md](AGENTS.md).
 
-____
+- **Claude (coding agent, đọc `AGENTS.md`)**: viết script đếm `evidence/count.py`, `evidence/survey/count_survey.py`; soạn nháp bộ câu khảo sát, `evidence/summary.md`, `spec.md` §0–§3, §6. Commit bộ câu thử / metric (`be7f8aa`) và data card (`e060b13`) có ghi Co-Authored-By Claude. Người phụ trách từng phần chạy lại script, đối chiếu số với data / khảo sát và sửa văn bản trước khi merge.
+- **Codex**: soạn 5 đoạn bài minh họa trong `data/passages.csv` (nhãn `synthetic`, `data/DATA_CARD.md`); nhóm soát nội dung.
+- Không dùng AI để tạo câu trả lời khảo sát, trích dẫn hay kết quả chạy. Chi tiết từng việc: [docs/ai-usage.md](docs/ai-usage.md).
 
 ## File mẫu — điền ở bước nào
 
