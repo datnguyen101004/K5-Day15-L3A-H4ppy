@@ -6,11 +6,11 @@
 
 ## 1. Đầu vào
 
-- **Persona** (`cost/personas.yaml`): ≥3 kiểu — tỉ lệ, số phiên / người / tháng, số lượt hỏi / phiên. Nguồn: __
-- **Số người dùng thật** 3 kịch bản: thấp __ · cơ sở __ · cao __. Nguồn: __
-- **Giá** ≥2 mức model (từ `further-reading/model-prices.md` của repo đề, có link + ngày xem): __ · __
-- **Tỉ lệ đạt** dùng để tính: __/__ (__%) — lượt `run-__` (lượt 2)
-- Đo token trên model __, tính giá model __ và __
+- **Persona** (`cost/personas.yaml`): 3 kiểu — `hoc_it` 25% · 4 phiên/tháng · 1 lượt; `hoc_vua` 60% · 8 phiên/tháng · 1 lượt; `hoc_nhieu` 15% · 24 phiên/tháng · 3 lượt. Nguồn: khảo sát câu 3 (số bài/tuần) và câu 5 (số lượt trả lời bạn học AI), n = 20, `evidence/survey/results.csv`; trần 3 lượt theo `canvas.md` dòng 6; ×4 tuần/tháng và 1 phiên/bài *(tự ước tính)*
+- **Số người dùng thật** 3 kịch bản: thấp 144 · cơ sở 431 · cao 721. Nguồn: `data/preclass` 05–25/11/2026 — 431 học viên mở video; 144 = 431 − 287 người mở video mà không gửi chat nào; 721 tổng tài khoản (`evidence/data-mining.md`)
+- **Giá** ≥2 mức model (từ `further-reading/model-prices.md` của repo đề, BTC xem 25/11/2026): `gemini-3.1-flash-lite` (Nhỏ) 0.25 / 1.50 USD mỗi 1M token vào / ra · `gemini-4-hydrogen` (Lớn) 1.50 / 7.50 — link https://ai.google.dev/gemini-api/docs/pricing
+- **Tỉ lệ đạt** dùng để tính: __/__ (__%) — lượt `run-__` (lượt 2) *(điền ở CP4)*
+- Đo token trên model __, tính giá model `gemini-3.1-flash-lite` và `gemini-4-hydrogen` *(điền khi `codebase/ai.py` nối model thật)*
 
 ## 2. Kết quả mô phỏng
 

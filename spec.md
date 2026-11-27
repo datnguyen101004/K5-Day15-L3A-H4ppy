@@ -125,6 +125,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 | 27/11 trước 19:30 *(bản CP2, mốc gốc)* | Điền header, §4 (lát cắt, sơ đồ, hình dạng workflow, công cụ `get_passage`, mức tự động, nguyên tắc G10 / G11 / G1), `data/DATA_CARD.md` bản đầu | Issue #4 — đưa lát cắt đã chốt ở `canvas.md` dòng 5–6 vào spec. Mọi thay đổi **sau** dòng này ghi tiếp bên dưới |
 | 27/11 trước 19:30 | Đồng bộ luồng A4 với hợp đồng đầu vào/đầu ra của bộ đánh giá và bổ sung đoạn minh họa theo mã khái niệm | Issue #3 và PR #5 — bộ đánh giá gửi mã khái niệm và đọc nhãn quyết định ở dòng đầu |
 | 27/11 trước 19:30 | Bằng chứng đầu: đào `data/preclass` (`evidence/count.py`, `evidence/data-mining.md`) và khảo sát 20 học viên L3 (`evidence/survey/`); điền `evidence/summary.md`, `canvas.md` dòng 4, §1 dòng bằng chứng | Issue #2 — CP2 cần số đầu tiên + 1 trích dẫn |
+| 28/11 trước 10:00 | Data card bản đủ (nguồn bài pre-class từng mã đoạn, thêm `check_questions.csv` và khảo sát); thêm `data/check_questions.csv` 12 câu trước / sau phiên; `cost/personas.yaml` thay số ví dụ bằng số có nguồn (data 144 / 431 / 721, khảo sát câu 3, câu 5) | Issue #16 — metric `tra_loi_dung_sau_phien` cần câu kiểm tra; mô phỏng chi phí cần persona có nguồn |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
