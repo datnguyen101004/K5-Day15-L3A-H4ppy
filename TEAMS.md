@@ -4,16 +4,17 @@
 > Giữ nguyên tên file `TEAMS.md` ở thư mục gốc repo, giữ nguyên các dòng `- Tên nhóm:` … và tiêu đề cột của bảng. Chỉ thay chỗ `____`.
 > Kiểm bằng `python run.py check`: phần "Kiểm TEAMS.md" không báo gì là đúng format.
 
-- Tên nhóm: ____
-- Lớp: ____
-- Track: ____
-- Link repo: ____
+- Tên nhóm: H4ppy
+- Lớp: L3A
+- Track: A
+- Link repo: https://github.com/datnguyen101004/K5-Day15-L3A-H4ppy.git
 
 | STT | Họ và tên | Mã học viên | Vai trò | Phần việc chính |
 |---|---|---|---|---|
-| 1 | ____ | ____ | Đội trưởng | ____ |
-| 2 | ____ | ____ | Thành viên | ____ |
-| 3 | ____ | ____ | Thành viên | ____ |
+| 1 | Phạm Nguyễn Tất Đạt | 2A202603401 | Đội trưởng | AI |
+| 2 | Nguyễn Ngọc Toàn | 2A202603405 | Thành viên | AI |
+| 3 | Phạm Đức Hồng Đức | 2A202603558 | Thành viên | AI |
+| 4 | Ngô Gia Bảo | 2A202603482 | Thành viên | AI |
 
 **Quy tắc điền**
 - **Lớp:** `L3A` hoặc `L3B`. **Track:** một chữ `A` (EdTech), `B` (Y tế), `C` (Du lịch), `D` (Thương mại điện tử), `E` (Tài chính) hoặc `F` (Làn khác). **Link repo:** link GitHub công khai của nhóm.
