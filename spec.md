@@ -61,7 +61,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 
   | Công cụ | Input | Output | Tác động ra ngoài? |
   |---|---|---|---|
-  | `get_passage` | mã đoạn (vd `D05-01`) hoặc chủ đề (str) | đoạn bài gốc `{code, text}` (kèm ý cốt lõi), hoặc rỗng nếu không có — đọc từ `data/passages.csv` | Không (chỉ đọc) |
+  | `get_passage` | mã đoạn (vd `temperature_stability_not_truth`) hoặc chủ đề (str) | đoạn bài `{code, text}` chứa ý cốt lõi, hoặc rỗng nếu không có — đọc từ `data/passages.csv` | Không (chỉ đọc) |
 
 - **Mức tự động:** [ ] AI gợi ý, người quyết · [x] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm — AI tự hỏi vặn / chốt **chỉ khi có đoạn gốc** để đối chiếu; không có đoạn gốc, hoặc câu hỏi ngoài bài, thì không chốt gì mà nói rõ "không có trong bài" và chỉ học viên hỏi giảng viên / TA. Sai thì học viên mang kiến thức sai vào buổi thực hành (đắt, khó phát hiện), nên mọi lần chốt đều phải trích đoạn gốc để học viên tự kiểm lại được.
 - **Chỗ chặn rủi ro** (rủi ro lớn nhất của lát cắt bị chặn ở đâu, bằng gì): Rủi ro lớn nhất là **bạn học AI hiểu nhầm quá thuyết phục, hoặc AI xác nhận một lời giải thích sai**, khiến học viên học sai. Chặn ở bước đối chiếu và nhánh kết phiên: (1) AI chỉ được xác nhận khi lời giải thích khớp **ý cốt lõi ghi trong đoạn gốc**, không dựa vào kiến thức riêng của model; (2) phiên **luôn kết thúc** bằng chốt đúng hoặc sửa đúng kèm trích đoạn gốc + mã đoạn — điểm hiểu nhầm của bạn học AI được nói rõ là cố ý và được sửa trước khi kết thúc (luật an toàn A4); (3) hỏi vặn tối đa 2 lượt rồi dừng, không kéo dài làm học viên nản.
@@ -74,7 +74,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
   | G11 — giải thích vì sao | Nhánh "chốt" và "sửa đúng": luôn nói "vì đoạn `<mã đoạn>` của bài nói …" khi xác nhận hay sửa, để học viên mở đúng đoạn kiểm lại |
   | G1 — làm rõ hệ thống làm được gì | Câu mở đầu của bạn học AI nói rõ: "mình chỉ hỏi về đoạn `<mã đoạn>`, không làm hộ bài kiểm tra"; nhánh từ chối đưa học viên về việc giải thích đoạn bài. Kiểm bằng câu `tu_choi` |
 
-- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật: Đến CP2 model chạy **chế độ giả** (`MODEL_PROVIDER=fake`, token 0) — nối model thật ở CP3. Đoạn bài gốc trong `data/passages.csv` là **bản nhóm tự viết lại** từ bài pre-class, chỉ vài khái niệm của một buổi, không phải nguyên bài.
+- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật: CP2 chạy **chế độ giả** (`MODEL_PROVIDER=fake`, token 0) với các đoạn minh họa trong `data/passages.csv`. Nối model thật và đối chiếu các đoạn minh họa với bài pre-class ở CP3.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 
@@ -123,6 +123,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 | Thời điểm | Đổi gì | Vì sao (trỏ về câu thử / lỗi / bằng chứng nào) |
 |---|---|---|
 | 27/11 trước 19:30 *(bản CP2, mốc gốc)* | Điền header, §4 (lát cắt, sơ đồ, hình dạng workflow, công cụ `get_passage`, mức tự động, nguyên tắc G10 / G11 / G1), `data/DATA_CARD.md` bản đầu | Issue #4 — đưa lát cắt đã chốt ở `canvas.md` dòng 5–6 vào spec. Mọi thay đổi **sau** dòng này ghi tiếp bên dưới |
+| 27/11 trước 19:30 | Đồng bộ luồng A4 với hợp đồng đầu vào/đầu ra của bộ đánh giá và bổ sung đoạn minh họa theo mã khái niệm | Issue #3 và PR #5 — bộ đánh giá gửi mã khái niệm và đọc nhãn quyết định ở dòng đầu |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
