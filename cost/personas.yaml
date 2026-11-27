@@ -3,34 +3,36 @@
 # Mọi số phải có nguồn (data / phỏng vấn / khảo sát / quy mô khoá có nguồn) hoặc ghi rõ "(tự ước tính)".
 # Chạy: python run.py simulate --try   (10 phiên, kiểm khung — làm trước CP3)
 #       python run.py simulate         (đủ số phiên dưới đây — bản nộp CP4)
-# Thay mọi dòng "(ví dụ)" bằng số và nguồn của nhóm; simulate nhắc nếu còn sót.
 
 sessions: 50        # số phiên mô phỏng — bản nộp ≥50
 seed: 42            # giữ cố định để chạy lại ra cùng chuỗi phiên
 
 users:              # số người dùng thật nếu đưa vào dùng — 3 kịch bản, ở quy mô thật của sản phẩm
                     # track A: khoá học · track B–F: người dùng của sản phẩm / nhóm nhắm tới, nguồn công khai có link
-  low: 300
-  base: 700
-  high: 1000
-  source: "(ví dụ) track A — thay bằng số của nhóm. Cơ sở: lớp L3 hơn 700 học viên (README hackathon); thấp, cao: (tự ước tính)"
+  low: 144
+  base: 431
+  high: 721
+  source: "data/preclass 05–25/11/2026 (evidence/count.py, evidence/data-mining.md). Cơ sở 431 = học viên có mở video pre-class. Thấp 144 = 431 − 287 học viên mở video mà không gửi chat nào (M2), tức người đã từng nhắn AI. Cao 721 = tổng tài khoản học viên (data/preclass/README.md)"
 
 personas:           # ≥3 kiểu người dùng; share cộng lại = 1
-  - name: dung_it
-    share: 0.5              # tỉ lệ người dùng kiểu này
-    uses_per_month: 4       # số phiên / người / tháng
-    turns_per_session: 1    # số lượt hỏi trong một phiên
-    source: "(ví dụ) phỏng vấn P1, P3 — thay bằng nguồn của nhóm"
-  - name: dung_vua
-    share: 0.3
-    uses_per_month: 10
-    turns_per_session: 3
-    source: "(ví dụ) khảo sát n = 24, câu 3"
-  - name: dung_nhieu
-    share: 0.2
-    uses_per_month: 20
-    turns_per_session: 5
-    source: "(ví dụ) data/preclass: đếm số lượt / người — cách đếm ở evidence/data-mining.md"
+                    # Chia theo câu 3 khảo sát (số bài pre-class / tuần), n = 20 phiếu hợp lệ, evidence/survey/results.csv
+                    # uses_per_month = trung vị số bài / tuần của nhóm × 4 tuần / tháng (tự ước tính), 1 phiên / bài (tự ước tính)
+                    # turns_per_session = trung vị câu 5 (số lượt trả lời bạn học AI) của nhóm, trần 3 lượt (canvas dòng 6: hỏi vặn ≤ 2 rồi chốt)
+  - name: hoc_it
+    share: 0.25             # 5/20 phiếu xem 0–1 bài / tuần
+    uses_per_month: 4       # trung vị 1 bài / tuần × 4
+    turns_per_session: 1    # trung vị câu 5 của nhóm = 1 lượt
+    source: "khảo sát C3: 5/20 phiếu 0–1 bài/tuần (trung vị 1) · C5 trung vị 1 lượt · ×4 tuần và 1 phiên/bài (tự ước tính)"
+  - name: hoc_vua
+    share: 0.60             # 12/20 phiếu xem 2–3 bài / tuần
+    uses_per_month: 8       # trung vị 2 bài / tuần × 4
+    turns_per_session: 1    # trung vị câu 5 của nhóm = 1 lượt
+    source: "khảo sát C3: 12/20 phiếu 2–3 bài/tuần (trung vị 2) · C5 trung vị 1 lượt · ×4 tuần và 1 phiên/bài (tự ước tính)"
+  - name: hoc_nhieu
+    share: 0.15             # 3/20 phiếu xem ≥4 bài / tuần
+    uses_per_month: 24      # trung vị 6 bài / tuần × 4
+    turns_per_session: 3    # trung vị câu 5 của nhóm = "2–3" → lấy 3 = trần canvas dòng 6
+    source: "khảo sát C3: 3/20 phiếu ≥4 bài/tuần (trung vị 6) · C5 trung vị “2–3”, lấy 3 (trần canvas dòng 6) · ×4 tuần và 1 phiên/bài (tự ước tính)"
 # Mỗi lượt hỏi lấy ngẫu nhiên một đầu vào trong eval/benchmark.csv (type thuong và kho).
 # Persona hỏi kiểu riêng: thêm vào persona đó
 #     types: [thuong, kho, tu_choi]
@@ -41,11 +43,11 @@ prices:             # USD / 1 triệu token — chép từ further-reading/model
   - model: gemini-3.1-flash-lite
     input: 0.25
     output: 1.50
-    source: "(ví dụ) https://ai.google.dev/gemini-api/docs/pricing · xem 25/11/2026"
+    source: "further-reading/model-prices.md của repo đề (BTC tra https://ai.google.dev/gemini-api/docs/pricing ngày 25/11/2026) · tầng Nhỏ"
   - model: gemini-4-hydrogen
     input: 1.50
     output: 7.50
-    source: "(ví dụ) https://ai.google.dev/gemini-api/docs/pricing · xem 25/11/2026"
+    source: "further-reading/model-prices.md của repo đề (BTC tra https://ai.google.dev/gemini-api/docs/pricing ngày 25/11/2026) · tầng Lớn"
 
 usd_to_vnd:         # tuỳ chọn: điền thì bản tóm tắt in thêm tiền Việt
   rate:
