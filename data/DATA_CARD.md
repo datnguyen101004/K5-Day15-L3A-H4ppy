@@ -64,3 +64,15 @@
 | Nhãn | Thật (tự khai, ẩn danh) |
 | Giới hạn | Mẫu nhỏ, tự chọn (người trong group Zalo, thời gian mở 22 phút) → lệch về người hay tương tác · tự khai, nhớ lại "lần gần nhất" · **cần đối chiếu với bản gốc `raw-*`**: câu 10 của phiếu S4 trùng gần nguyên văn với một câu *mẫu hư cấu* do trợ lý AI viết khi nhóm soạn khảo sát — chưa xác nhận đây là câu trả lời thật thì chưa dùng làm trích dẫn |
 
+
+## Dataset 4 · Bộ slide tự học về AI agent (`data/slides/ai-agent.pdf`)
+
+| | |
+|---|---|
+| Dùng để làm gì | Tài liệu đầu vào của "Lớp học tranh tài" (`classroom/`): hiện slide, gợi ý thẻ, ra đề trong trận, nối câu hỏi phỏng vấn ở Kiểm tra cuối |
+| Từ đâu | Nhóm tự soạn với trợ lý AI (28/11/2026), **không** phải slide BTC cấp; nội dung là kiến thức phổ thông về agent (workflow, tool calling, ReAct, bộ nhớ, RAG, guardrail, đánh giá, chi phí) |
+| Xử lý những bước gì | Dựng thành PDF 20 trang, mỗi trang 1 tiêu đề + các gạch đầu dòng · app đọc bằng `pypdf`, bỏ đầu trang / chân trang lặp lại |
+| Số dòng / số đoạn | 20 slide, 81 gạch đầu dòng (đếm bằng `classroom/rag.py`) |
+| Phiên bản / ngày lấy | v1 · 28/11/2026 |
+| Nhãn | `synthetic` (nhóm tự viết) |
+| Giới hạn | Chưa được giảng viên soát nội dung · viết gọn kiểu slide, không phải bài giảng thật của lớp → chất lượng gợi ý / câu hỏi đo trên bộ này chưa chắc giữ nguyên với slide BTC |

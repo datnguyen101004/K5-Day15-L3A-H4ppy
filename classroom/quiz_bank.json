@@ -1,0 +1,176 @@
+{
+  "about": "Câu hỏi phỏng vấn chép NGUYÊN VĂN từ bộ tổng hợp công khai landedjobs/ai-interview-questions (giấy phép MIT), chỉ lấy câu có nhãn Reported (được ứng viên báo cáo hoặc gắn với nguồn công khai). 'asked_at' chép đúng dòng 'Where asked' của bộ tổng hợp; 'source_url' là nguồn mà bộ tổng hợp dẫn. 'question_vi' là bản tự dịch. 'keywords_vi' do nhóm viết để tìm slide liên quan; đáp án chấm theo slide của lớp, không theo đáp án mẫu của landed.jobs.",
+  "source": {
+    "name": "landedjobs/ai-interview-questions",
+    "url": "https://github.com/landedjobs/ai-interview-questions",
+    "license": "MIT",
+    "fetched": "2026-11-28"
+  },
+  "questions": [
+    {
+      "id": "agent-what",
+      "question_en": "What is an AI agent? What is the 'Agentic Ops' problem?",
+      "question_vi": "AI agent là gì? Bài toán 'Agentic Ops' (vận hành agent) là gì?",
+      "companies": ["Anthropic", "Multi-On", "LangChain"],
+      "asked_at": "Reported at Anthropic (jobright Dec 18 2025), Multi-On, LangChain (aemonline Oct 11 2025)",
+      "level_vi": "Dễ vừa",
+      "source_url": "https://pub.towardsai.net/101-ml-llm-agentic-aiops-interview-questions-31a346ac84d3",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-what-is-an-ai-agent-vs-a-prompt-vs-a-chain",
+      "keywords_vi": "agent là hệ thống mô hình ngôn ngữ tự chọn bước tiếp theo gọi công cụ hành động khác chatbot"
+    },
+    {
+      "id": "react",
+      "question_en": "What is the ReAct framework, and why is it important for Agentic AI?",
+      "question_vi": "ReAct là gì, và vì sao nó quan trọng với AI dạng agent?",
+      "companies": ["Multi-On", "Anthropic", "LangChain"],
+      "asked_at": "Reported at Multi-On, Anthropic MLE (jobright Dec 18 2025), LangChain",
+      "level_vi": "Vừa",
+      "source_url": "https://aemonline.net/blog/top-25-agentic-ai-interview-questions-with-answer-for-2026/",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-the-react-framework",
+      "keywords_vi": "ReAct reasoning acting suy luận hành động vòng lặp quan sát kết quả giới hạn số bước"
+    },
+    {
+      "id": "planning",
+      "question_en": "How do you handle planning and decomposition in multi-step tasks for an AI agent?",
+      "question_vi": "Bạn xử lý việc lập kế hoạch và chia nhỏ công việc cho agent trong tác vụ nhiều bước như thế nào?",
+      "companies": ["Anthropic", "Multi-On", "DeepMind"],
+      "asked_at": "Reported at Anthropic (jobright Dec 18 2025), Multi-On (aemonline), DeepMind MLE",
+      "level_vi": "Khó",
+      "source_url": "https://aemonline.net/blog/top-25-agentic-ai-interview-questions-with-answer-for-2026/",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-planning-and-decomposition-in-multi-step-agent-tasks",
+      "keywords_vi": "lập kế hoạch nhiều bước plan-and-execute thực thi từng bước sửa kế hoạch sai dây chuyền"
+    },
+    {
+      "id": "tools",
+      "question_en": "What are 'tools' in the context of Agentic AI? How does the agent decide which to use?",
+      "question_vi": "'Công cụ' (tools) trong AI dạng agent là gì? Agent quyết định dùng công cụ nào bằng cách nào?",
+      "companies": ["Anthropic", "OpenAI"],
+      "asked_at": "Reported at Anthropic (jobright Dec 18 2025), OpenAI MLE (jobright Dec 24 2025)",
+      "level_vi": "Dễ vừa",
+      "source_url": "https://aemonline.net/blog/top-25-agentic-ai-interview-questions-with-answer-for-2026/",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-tools-in-agentic-ai-and-how-agents-pick-them",
+      "keywords_vi": "gọi công cụ tool calling tên công cụ tham số mô tả công cụ rõ input output gọi sai công cụ"
+    },
+    {
+      "id": "multi-agent",
+      "question_en": "Can you explain the concept of 'Multi-Agent Systems' and their advantages?",
+      "question_vi": "Hãy giải thích khái niệm 'hệ nhiều agent' và lợi ích của nó.",
+      "companies": ["Multi-On", "Anthropic"],
+      "asked_at": "Reported at Multi-On, Anthropic MLE, AutoGen collaborators",
+      "level_vi": "Khó",
+      "source_url": "https://aemonline.net/blog/top-25-agentic-ai-interview-questions-with-answer-for-2026/",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-multi-agent-orchestration-when-does-it-help",
+      "keywords_vi": "hệ nhiều agent chuyên trách lập kế hoạch thực thi kiểm tra chi phí độ trễ tách agent vai"
+    },
+    {
+      "id": "agent-eval",
+      "question_en": "How do you evaluate an agent? What evaluation metrics make sense?",
+      "question_vi": "Bạn đánh giá một agent thế nào? Những metric nào là hợp lý?",
+      "companies": ["Anthropic", "OpenAI", "Multi-On", "LangChain"],
+      "asked_at": "Reported at Anthropic MLE (aiofferly Dec 3 2025), OpenAI MLE (jobright Dec 24 2025), Multi-On, LangChain",
+      "level_vi": "Khó",
+      "source_url": "https://www.aiofferly.com/career-guide/anthropic-ml-interview-questions",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-how-do-you-evaluate-an-agent",
+      "keywords_vi": "đánh giá agent bộ câu thử metric kiểm chứng kết quả cuối đường đi gọi đúng công cụ số bước chuẩn đạt"
+    },
+    {
+      "id": "failure-modes",
+      "question_en": "What are the most common agent failure modes? How do you mitigate them?",
+      "question_vi": "Những kiểu lỗi phổ biến nhất của agent là gì? Bạn giảm thiểu chúng ra sao?",
+      "companies": ["Multi-On", "LangChain", "Anthropic", "Replit"],
+      "asked_at": "Reported at Multi-On, LangChain, Anthropic, Replit Agent",
+      "level_vi": "Khó",
+      "source_url": "https://pub.towardsai.net/101-ml-llm-agentic-aiops-interview-questions-31a346ac84d3",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-common-agent-failure-modes-in-production",
+      "keywords_vi": "kiểu lỗi thường gặp lặp vô hạn ảo giác công cụ bỏ cuộc sớm tin nhầm kết quả công cụ giới hạn số bước"
+    },
+    {
+      "id": "memory",
+      "question_en": "When discussing agents, what kinds of memory exist and how would you architect them?",
+      "question_vi": "Agent có những loại bộ nhớ nào, và bạn sẽ thiết kế chúng ra sao?",
+      "companies": ["Multi-On", "Anthropic", "Personal.ai"],
+      "asked_at": "Reported at Multi-On, Anthropic, Personal.ai (aemonline Oct 2025)",
+      "level_vi": "Khó",
+      "source_url": "https://aemonline.net/blog/top-25-agentic-ai-interview-questions-with-answer-for-2026/",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-agent-memory-short-term-vs-long-term",
+      "keywords_vi": "bộ nhớ ngắn hạn dài hạn lịch sử hội thoại cửa sổ ngữ cảnh tóm tắt lưu qua nhiều phiên cơ sở dữ liệu"
+    },
+    {
+      "id": "rag-parts",
+      "question_en": "Explain the main parts of a RAG system and how they work.",
+      "question_vi": "Hãy giải thích các phần chính của một hệ thống RAG và cách chúng hoạt động.",
+      "companies": ["OpenAI", "Databricks", "Baidu"],
+      "asked_at": "Reported at OpenAI MLE (jobright Dec 24 2025), Databricks MLE, Baidu LLM Engineer (Glassdoor Nov 2025)",
+      "level_vi": "Dễ vừa",
+      "source_url": "https://www.datacamp.com/blog/rag-interview-questions",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-the-main-parts-of-a-rag-system",
+      "keywords_vi": "RAG truy xuất rồi sinh câu trả lời tìm đoạn tài liệu đưa vào ngữ cảnh chia đoạn nguồn giảm bịa đặt"
+    },
+    {
+      "id": "retrieval",
+      "question_en": "Dense vs sparse vs hybrid retrieval - when does each shine?",
+      "question_vi": "Truy xuất dense (vector), sparse (từ khoá) và hybrid — khi nào mỗi loại phát huy tốt nhất?",
+      "companies": ["OpenAI", "Anthropic", "Cohere"],
+      "asked_at": "Reported at OpenAI, Anthropic, Cohere MLE (DataCamp RAG 2026 guide + r/MachineLearning)",
+      "level_vi": "Khá khó",
+      "source_url": "https://www.datacamp.com/blog/rag-interview-questions",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-dense-vs-sparse-bm25-vs-hybrid-retrieval",
+      "keywords_vi": "truy xuất từ khoá BM25 vector embedding hybrid search tên riêng thuật ngữ diễn đạt khác"
+    },
+    {
+      "id": "regression",
+      "question_en": "How do you make LLM/agent behavior measurable and regressions debuggable?",
+      "question_vi": "Làm sao để hành vi của LLM/agent đo được, và khi bị thụt lùi (regression) thì lần ra được lỗi?",
+      "companies": ["Databricks", "OpenAI"],
+      "asked_at": "Reported at Databricks MLE (aiofferly Jan 21 2026), OpenAI MLE",
+      "level_vi": "Khó",
+      "source_url": "https://www.aiofferly.com/career-guide/databricks-ml-interview-questions",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-regression-testing-before-modelprompt-changes-ship",
+      "keywords_vi": "metric kiểm chứng bộ câu thử trace ghi phiên bản prompt mô hình so sánh giữa các lần chạy chuẩn đạt"
+    },
+    {
+      "id": "monitoring",
+      "question_en": "How do you monitor and debug an LLM system in production?",
+      "question_vi": "Bạn giám sát và gỡ lỗi một hệ thống LLM đang chạy thật như thế nào?",
+      "companies": ["OpenAI", "Databricks"],
+      "asked_at": "Reported at OpenAI MLE (jobright Dec 24 2025), Databricks ML (aiofferly Jan 21 2026), enterprise AI shops",
+      "level_vi": "Khó",
+      "source_url": "https://skphd.medium.com/large-language-model-operations-llmops-interview-questions-and-answers-43786c859a95",
+      "bank_url": "https://www.landed.jobs/resources/questions/llm-and-ml-concepts-llm-observability-vs-classical-ml-observability",
+      "keywords_vi": "quan sát tracing trace ghi lời gọi mô hình công cụ token thời gian sai ở bước nào đo hành vi"
+    },
+    {
+      "id": "hallucination",
+      "question_en": "Define hallucinations in LLMs and explain how you would reduce them.",
+      "question_vi": "Ảo giác (hallucination) của LLM là gì, và bạn sẽ giảm nó bằng cách nào?",
+      "companies": ["OpenAI", "Anthropic", "Mastercard"],
+      "asked_at": "OpenAI, Anthropic, Mastercard (AI Engineer list, Reported)",
+      "level_vi": "Dễ",
+      "source_url": "https://www.landed.jobs/resources/questions/define-hallucinations-in-llms-and-explain-how-you-would-reduce-them-aiq-0007",
+      "bank_url": "https://www.landed.jobs/resources/questions/define-hallucinations-in-llms-and-explain-how-you-would-reduce-them-aiq-0007",
+      "keywords_vi": "ảo giác bịa đặt bịa tham số gọi công cụ không tồn tại bám vào nguồn trả kèm nguồn tự kiểm lại tin nhầm kết quả"
+    },
+    {
+      "id": "guardrails",
+      "question_en": "OpenAI FDE Technical Deep Dive: \"guardrails for production LLM applications.\"",
+      "question_vi": "Vòng đào sâu kỹ thuật FDE của OpenAI: bàn về guardrail cho ứng dụng LLM chạy thật.",
+      "companies": ["OpenAI"],
+      "asked_at": "OpenAI · FDE · Virtual Onsite",
+      "level_vi": "Khá khó",
+      "source_url": "https://gaijineer.co/openai-forward-deployed-engineer-interview-process",
+      "bank_url": "https://www.landed.jobs/resources/questions/fde-product-and-gtm-guardrails-for-production-llm-apps",
+      "keywords_vi": "guardrail kiểm tra đầu vào đầu ra chặn yêu cầu ngoài phạm vi lộ dữ liệu quyền tối thiểu người duyệt"
+    },
+    {
+      "id": "prompt-injection",
+      "question_en": "Be ready to talk about concepts like constitutional AI, prompt injections, guardrailing, data privacy in the enterprise and model steering.",
+      "question_vi": "Hãy sẵn sàng trình bày các khái niệm như constitutional AI, prompt injection, guardrail, quyền riêng tư dữ liệu trong doanh nghiệp và điều hướng mô hình.",
+      "companies": ["Anthropic"],
+      "asked_at": "Anthropic · Solutions Engineer / Customer Engineer · loop",
+      "level_vi": "Khó",
+      "source_url": "https://www.reddit.com/r/salesengineers/comments/1u22j5j/interviewing_at_anthropic/",
+      "bank_url": "https://www.landed.jobs/resources/questions/fde-product-and-gtm-constitutional-ai-prompt-injections-guardrailing-anthropic-s",
+      "keywords_vi": "prompt injection cài lệnh vào dữ liệu tách chỉ dẫn hệ thống guardrail lộ dữ liệu cá nhân xác nhận của người"
+    }
+  ]
+}
