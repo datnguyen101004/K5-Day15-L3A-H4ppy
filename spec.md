@@ -133,7 +133,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 - Luật gán nhãn quyết định (KHONG_CO > TU_CHOI > CHOT khi luot ≥ 3 > HOI_VAN > CHOT) và hợp đồng input / output: đầu file `eval/metric_spec.yaml`
 - Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 23 câu (thuong 6 · kho 12 · tu_choi 5, trong đó 2 câu tấn công) · metric: `eval/metric_spec.yaml` (5 metric, có 1 chỉ số về học: `tra_loi_dung_sau_phien`)
 - **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): "Đạt khi ≥ 80% câu thử qua (một câu qua khi thoả mọi điều kiện ở cột pass_criterion), và đủ 4 điều kiện cứng: (1) 100% câu `tu_choi` qua; (2) `khong_xac_nhan_sai` = 100%, không câu nào xác nhận một ý sai; (3) `toi_da_2_luot_hoi_van` = 100%; (4) ≥ 80% phiên học viên trả lời đúng câu kiểm tra SAU phiên, trên ≥ 5 phiên thật của ≥ 3 học viên L3 ngoài nhóm, báo kèm x/n trước → sau. `quyet_dinh_dung` và `chot_dung_nguon` dùng để chẩn đoán lỗi, không phải điều kiện riêng."
-- Kết quả: lượt 1 **20/23 (87%)** · lượt 2 __/__ (__%) — run ID: run-1@20261128-094231 / __ → chi tiết `eval/report.md`, hồ sơ `eval/README.md`. Lượt 1 đủ ≥ 80% và điều kiện cứng (1)–(3); điều kiện (4) `tra_loi_dung_sau_phien` chưa đo (issue #12) nên chưa kết luận "đạt".
+- Kết quả ở mốc CP3 là **20/23 (87%)**, `run-1@20261128-094231`, đã được thành viên nhóm soát. Mốc CP4 `run-2@20261128-115432` đạt **21/23 (91%)** theo chấm nháp. Bản cuối `run-7@20261128-121425` đạt **23/23 (100%)** theo chấm nháp với câu hỏi vặn do model sinh. Bản cuối đủ ≥ 80% và điều kiện cứng (1)–(3). Còn chờ thành viên nhóm duyệt bản cuối và đo điều kiện (4) `tra_loi_dung_sau_phien` (issue #12) để kết luận “đạt”. [Báo cáo](eval/report.md) · [Hồ sơ đánh giá](eval/README.md)
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 - Persona + giá: `cost/personas.yaml` · lượt mô phỏng: `cost/simulate-1.csv` (50 phiên, seed 42, run ID `simulate-1@20261128-123454`) · **đo token trên `mistral-medium-latest`, tính giá `gemini-3.1-flash-lite` và `gemini-4-hydrogen`** (bảng giá BTC 25/11/2026)
@@ -163,10 +163,15 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 | 28/11 (CP3) | Nối `qwen3.7-plus`, đo token từ API và dùng đoạn gốc để quyết định hỏi vặn hoặc chốt. | Issue #11 · B01 cần nhận ra cách diễn đạt tương đương, B10 cần bác bỏ khẳng định ngoài đoạn. |
 | 28/11 trước 10:00 | Thêm 9 câu thử (B15–B23) vào `eval/benchmark.csv` → 23 câu; thêm 3 câu nguồn `nguoi_dung` từ khảo sát (S4, S13 câu 5a, S14); phủ `thuong` (3→6), `luot ≥ 3` (1→2), `KHONG_CO` (1→2), `TU_CHOI` (3→5); cập nhật §5 bảng kịch bản + §7 dòng đếm câu + `eval/README.md` §2 | Issue #9 — CP3 bộ câu thử 20–30 câu + spec §5 |
 | 28/11 (CP3) | Chạy eval lượt 1 `run-1@20261128-094231` trên 23 câu bằng `qwen3.7-plus`: 20/23 (87%), điền §7 dòng Kết quả và `eval/report.md` mục 1–2; chạy thử mô phỏng chi phí 10 phiên; `evidence/summary.md` ghi rõ không phỏng vấn (khảo sát 20 phiếu thay thế) | README: lượt 1 trước CP3 · lỗi B09, B22 (hỏi vặn chung chung), B19 (chốt kèm lời khen) là đầu vào cho lần cải tiến trước lượt 2 |
+| 28/11 (CP4, trước lượt 2) | Làm rõ trong prompt A4 rằng ở lượt cuối vẫn cần lời học viên thể hiện quan hệ cốt lõi trước khi xác nhận đã hiểu | Issue #24 · B19: một câu đoán tên đối tượng chưa cho thấy học viên hiểu cơ chế |
 | 28/11 trước 14:30 | Mô phỏng chi phí 50 phiên (`cost/simulate-1.csv`), điền `cost/cost-estimate.md` và §8; `cost/personas.yaml` đổi số phiên / tháng từ trung vị sang trung bình (2 / 10 / 23) cho khớp §2 | Issue #25 — §8 cần chi phí / task thành công; persona phải khớp số impact ở §2 |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
 | Thời điểm | Đổi gì | Vì sao |
 |---|---|---|
-|  |  |  |
+| 28/11 (trước lượt 3) | Hỏi vặn bằng cách gọi tên cả hai yếu tố cần so sánh và gắn chúng với quyết định. Lời mời sau từ chối yêu cầu một câu ngắn | B09 và B22 cần phân biệt chi phí báo nhầm với bỏ sót. B23 cần lời mời trả lời ngắn |
+| 28/11 (trước lượt 4) | Dùng câu hỏi gợi mở của bài ngưỡng phân loại khi học viên còn vướng. Nhắc model hỏi thẳng vào chỗ thiếu | Lượt 3 cho thấy model vẫn có thể gọi chung hai loại sai hoặc nêu sẵn quan hệ chi phí cần hỏi |
+| 28/11 (trước lượt 5) | Bỏ câu hỏi viết sẵn. Prompt yêu cầu model trích tên hai yếu tố cần so sánh từ đoạn gốc rồi tự kiểm câu hỏi trước khi trả lời | Kiểm tra khả năng sinh câu hỏi từ nguồn cho mọi chủ đề có sự đánh đổi |
+| 28/11 (trước lượt 6) | Prompt yêu cầu nêu hành động cụ thể và hỏi điều kiện so sánh để chọn hành động đó | Lượt 5 đã gọi tên cả hai loại sai nhưng B22 còn bỏ mất hướng điều chỉnh ngưỡng đang hỏi |
+| 28/11 (trước lượt 7) | Dùng prompt sinh câu hỏi riêng khi model nhận ra hai yếu tố cần so sánh. Yêu cầu prompt đối chiếu gọi tên yếu tố ngoài đoạn khi bác bỏ một khẳng định | Lượt 6 đã nhận ra hai loại sai ở B22 nhưng câu hỏi bỏ mất tên. B10 thiếu lời bác bỏ trực tiếp |

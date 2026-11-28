@@ -33,6 +33,12 @@ Trả một đối tượng JSON với các trường sau, theo đúng thứ t�
   trong đoạn chưa? Đánh giá theo nghĩa của câu. Một lời giải thích tương đương
   là đủ dù dùng từ khác, giản lược chi tiết hay đổi cách kể. Không đòi giải thích
   sâu hơn đoạn. Chỉ đồng ý hoặc nhắc tên khái niệm thì chưa đủ.
+  Từ lượt trả lời thứ 3, vẫn dùng cùng tiêu chuẩn dù phiên sắp kết thúc. Một câu
+  đoán chỉ gọi tên đối tượng được hỏi, không nói đối tượng đó làm gì hoặc quan
+  hệ ra sao với các phần còn lại, chưa chứng minh hiểu cơ chế. Nếu các lời của
+  học viên cộng lại vẫn thiếu quan hệ cốt lõi, đặt core_covered=false để chốt
+  mà không xác nhận đã hiểu. Không lấy phần giải thích trong câu hỏi của AI để
+  bù cho ý học viên chưa nêu.
 - has_error (boolean): lời học viên có ý sai hoặc nêu thêm một khẳng định độc lập
   mà đoạn không hỗ trợ không? Xét cả các khẳng định đặt dưới dạng câu hỏi gợi ý.
   Khi học viên mô tả đúng cùng một cơ chế, cách gọi bao quát hay nêu lại các bước
@@ -40,19 +46,51 @@ Trả một đối tượng JSON với các trường sau, theo đúng thứ t�
 - ai_misconception (chuỗi): nếu ai_previous_messages có câu hỏi hoặc phát biểu
   hàm ý trái với đoạn, ghi ngắn gọn mệnh đề sai đó, không dùng dấu hỏi. Điền trường
   này cả khi học viên đã tự sửa đúng ý ấy. Để trống nếu không có mệnh đề sai.
+- unsupported_claim (chuỗi): ghi nguyên ý của học viên nếu họ đưa một yếu tố
+  mới vào để giải thích cơ chế nhưng đoạn gốc không hỗ trợ mối liên hệ đó.
+  Trích ý đó kể cả khi nó đứng sau một ý đúng hoặc được nêu dưới dạng câu hỏi.
+  Để trống nếu chỉ có một lỗi về chính quan hệ đã nêu trong đoạn gốc.
 - correction (chuỗi): khi từ chối hoặc chốt, sửa các ý sai của học viên nếu có.
-  Khi hỏi vặn, nếu học viên gài một khẳng định độc lập ngoài đoạn, phải viết
-  một câu trần thuật bác bỏ chính khẳng định đó hoặc nói rõ đoạn bài không hỗ
-  trợ nó, kể cả khi khẳng định được viết dưới dạng câu hỏi. Không thay lời bác
-  bỏ bằng câu hỏi hay chỉ nhắc lại ý chuẩn mà không liên hệ với khẳng định đó.
+  Khi hỏi vặn, nếu unsupported_claim có nội dung, viết một câu trần thuật
+  gọi tên yếu tố mới và bác bỏ quan hệ đó hoặc nói rõ đoạn gốc không hỗ trợ nó.
+  Không để correction trống trong trường hợp này. Không chuyển lời bác bỏ
+  vào câu hỏi hoặc chỉ nhắc lại ý chuẩn mà không nhắc tới yếu tố mới.
   Để trống khi không cần sửa. Không lặp nhãn, nguồn hay câu hỏi trong trường này.
+- comparison_terms (danh sách chuỗi): nếu cần hỏi vặn về một quyết định phụ
+  thuộc vào sự đánh đổi giữa hai loại chi phí, rủi ro hoặc kết quả, trích tên
+  cụ thể của cả hai loại từ passage.text. Áp dụng khi học viên viện dẫn một
+  mặc định hoặc nói chung về yếu tố quyết định mà chưa phân biệt hai loại.
+  Không dùng các cụm chung như "hai loại chi phí" thay cho tên của từng loại.
+  Trả danh sách rỗng nếu câu hỏi không liên quan đến một sự đánh đổi như vậy.
+- decision_to_explain (chuỗi): khi có comparison_terms, ghi hành động cụ thể gồm
+  động từ và đối tượng mà học viên cần giải thích. Nếu câu AI vừa hỏi đã nêu hành
+  động cụ thể thì lấy hành động đó. Nếu chưa nêu thì lấy quyết định phải chọn từ
+  đoạn gốc. Giữ nguyên hướng của hành động nếu đã có. Các cụm như "cân nhắc chi
+  phí" hoặc "ưu tiên giảm lỗi" chỉ là tiêu chí, chưa phải hành động cần chọn.
+  Để trống nếu comparison_terms rỗng.
 - text (chuỗi): ở lượt mở đầu (turn=0), đặt một câu hỏi nêu một hiểu nhầm thường gặp
   và mời học viên giải thích. Khi reason rỗng và còn lượt, nếu core_covered=false hoặc has_error=true thì
   đặt đúng một câu hỏi mở nhắm vào ý còn vướng. Hỏi về phần có lỗi
-  ngay cả khi học viên đã nêu đúng ý cốt lõi. Để trống khi từ chối hoặc chốt.
+  ngay cả khi học viên đã nêu đúng ý cốt lõi. Nếu comparison_terms có hai tên,
+  nêu nguyên cả hai tên và hành động trong decision_to_explain ngay trong câu
+  hỏi. Yêu cầu học viên nêu điều kiện so sánh để chọn hành động đó. Khi so về
+  chi phí, hỏi chi phí của loại nào phải cao hơn chi phí của loại còn lại để
+  chọn hành động. Đừng đưa sẵn kết quả so sánh hoặc chỉ hỏi chung loại nào cần
+  ưu tiên. Trước khi trả JSON, kiểm tra text chứa cả hai tên và nhắc tới hành
+  động cụ thể. Nếu thiếu, viết lại text. Khi core_covered=false, đi thẳng vào
+  câu hỏi và tránh khen phần đã nêu hoặc thêm nhận xét về người học khác.
+  Để trống khi từ chối hoặc chốt.
 Ưu tiên từ chối trước giới hạn lượt. Từ lượt trả lời thứ 3 phải chốt nếu không từ
 chối. Khi lời học viên đã đủ ý cốt lõi và không có ý sai, chốt ngay. Dùng tiếng
 Việt, viết ngắn. Không đưa đáp án bài kiểm tra."""
+
+COMPARISON_SYSTEM = """Bạn là bạn học AI. Viết đúng một câu hỏi để học viên tự
+xác định điều kiện chọn hành động. Dữ liệu JSON có comparison_terms là hai tên
+cần so sánh và decision_to_explain là hành động đang hỏi. Câu hỏi phải chứa cả
+hai tên và hành động này. Yêu cầu học viên chọn yếu tố nào phải lớn hơn hoặc cần
+được ưu tiên để chọn hành động. Nêu hai yếu tố như hai khả năng, tránh khẳng định
+hoặc ngầm nêu yếu tố nào lớn hơn. Không thêm lời dẫn, đáp án hay lời khen.
+Trả một đối tượng JSON với duy nhất trường text là câu hỏi tiếng Việt."""
 
 
 def study_turn(text: str, questions: tuple[str, ...] = ()) -> tuple[str, bool]:
@@ -126,11 +164,17 @@ def _respond(
             lines.append(correction)
             if reason != "override":
                 lines.append(source)
-        lines.append("Bạn thử giải thích một ý trong đoạn bài nhé.")
+        lines.append("Bạn thử giải thích một ý trong đoạn bài bằng một câu ngắn nhé.")
         return "\n".join(lines), False
 
     if turn == 0 or (not confirm and remaining > 0):
         question = decision.get("text", "")
+        terms = decision.get("comparison_terms")
+        action = decision.get("decision_to_explain")
+        if turn > 0 and isinstance(terms, list) and len(terms) == 2 and action:
+            comparison = {"comparison_terms": terms, "decision_to_explain": action}
+            focused_reply = call_model(COMPARISON_SYSTEM, json.dumps(comparison, ensure_ascii=False))
+            question = json.loads(focused_reply["text"])["text"]
         if not isinstance(question, str) or not question.strip():
             question = "Bạn thử giải thích ý cốt lõi của đoạn bài bằng lời của mình nhé?"
         body = " ".join(part for part in (correction, question.strip()) if part)
