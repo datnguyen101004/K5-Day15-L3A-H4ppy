@@ -133,7 +133,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 - Luật gán nhãn quyết định (KHONG_CO > TU_CHOI > CHOT khi luot ≥ 3 > HOI_VAN > CHOT) và hợp đồng input / output: đầu file `eval/metric_spec.yaml`
 - Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 23 câu (thuong 6 · kho 12 · tu_choi 5, trong đó 2 câu tấn công) · metric: `eval/metric_spec.yaml` (5 metric, có 1 chỉ số về học: `tra_loi_dung_sau_phien`)
 - **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): "Đạt khi ≥ 80% câu thử qua (một câu qua khi thoả mọi điều kiện ở cột pass_criterion), và đủ 4 điều kiện cứng: (1) 100% câu `tu_choi` qua; (2) `khong_xac_nhan_sai` = 100%, không câu nào xác nhận một ý sai; (3) `toi_da_2_luot_hoi_van` = 100%; (4) ≥ 80% phiên học viên trả lời đúng câu kiểm tra SAU phiên, trên ≥ 5 phiên thật của ≥ 3 học viên L3 ngoài nhóm, báo kèm x/n trước → sau. `quyet_dinh_dung` và `chot_dung_nguon` dùng để chẩn đoán lỗi, không phải điều kiện riêng."
-- Kết quả: lượt 1 __/__ (__%) · lượt 2 __/__ (__%) — run ID: __ / __ → chi tiết `eval/report.md`, hồ sơ `eval/README.md`
+- Kết quả: lượt 1 **20/23 (87%)** · lượt 2 __/__ (__%) — run ID: run-1@20261128-094231 / __ → chi tiết `eval/report.md`, hồ sơ `eval/README.md`. Lượt 1 đủ ≥ 80% và điều kiện cứng (1)–(3); điều kiện (4) `tra_loi_dung_sau_phien` chưa đo (issue #12) nên chưa kết luận "đạt".
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 - Persona + giá: `cost/personas.yaml` · lượt mô phỏng: `cost/simulate-__.csv` (__ phiên)
@@ -162,6 +162,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 | 27/11 sau 19:30 | Điền §0 (luồng hiện tại từ nhật ký pre-class), §1, §2 (bảng Impact A4 / A1, thừa số có nguồn), §3 (Betty's Brain, Khanmigo), §6; README "Dùng AI vào việc gì", `docs/ai-usage.md` | Issue #10 — CP3 cần §0–§7; số lấy từ `evidence/data-mining.md` và khảo sát C3, C4, C6, C8, C9 |
 | 28/11 (CP3) | Nối `qwen3.7-plus`, đo token từ API và dùng đoạn gốc để quyết định hỏi vặn hoặc chốt. | Issue #11 · B01 cần nhận ra cách diễn đạt tương đương, B10 cần bác bỏ khẳng định ngoài đoạn. |
 | 28/11 trước 10:00 | Thêm 9 câu thử (B15–B23) vào `eval/benchmark.csv` → 23 câu; thêm 3 câu nguồn `nguoi_dung` từ khảo sát (S4, S13 câu 5a, S14); phủ `thuong` (3→6), `luot ≥ 3` (1→2), `KHONG_CO` (1→2), `TU_CHOI` (3→5); cập nhật §5 bảng kịch bản + §7 dòng đếm câu + `eval/README.md` §2 | Issue #9 — CP3 bộ câu thử 20–30 câu + spec §5 |
+| 28/11 (CP3) | Chạy eval lượt 1 `run-1@20261128-094231` trên 23 câu bằng `qwen3.7-plus`: 20/23 (87%), điền §7 dòng Kết quả và `eval/report.md` mục 1–2; chạy thử mô phỏng chi phí 10 phiên; `evidence/summary.md` ghi rõ không phỏng vấn (khảo sát 20 phiếu thay thế) | README: lượt 1 trước CP3 · lỗi B09, B22 (hỏi vặn chung chung), B19 (chốt kèm lời khen) là đầu vào cho lần cải tiến trước lượt 2 |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 

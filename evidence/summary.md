@@ -14,7 +14,7 @@
 ## 2. Số chính
 
 - Đào data: 245/276 (88,8%) học viên thấy tin bạn học AI nhưng không đáp lại lần nào; 354/431 (82,1%) học viên mở video nhưng không nộp câu kiểm tra pre/post nào; 287/431 (66,6%) không gửi chat nào
-- Phỏng vấn: __/3 người gặp *(n nhỏ không ghi %)* · số lần / tháng: P1 __, P2 __, P3 __ · mỗi lần mất __–__ phút
+- Phỏng vấn: **không làm** — nhóm chốt khảo sát ≥20 học viên L3 ngoài nhóm làm nguồn kiểm lại, thay cho phỏng vấn (xem "Lịch khảo sát" cuối file). Đào data và khảo sát đều đạt ngưỡng, vượt yêu cầu tối thiểu ≥1 nguồn.
 - Khảo sát (chạy `python evidence/survey/count_survey.py`): 21 phiếu, **n = 20 phiếu hợp lệ** (13 L3A, 7 L3B, đều đã xem pre-class). Bỏ 1 phiếu lab coach vì không đúng người dùng.
   - C8, phải hỏi hoặc xem lại kiến thức pre-class ở buổi thực hành: ≥1 lần **14/20 (70%)**; ≥2 lần 6/20 (30%). Mỗi lần mất: dưới 5' 7 người, 5–15' 5 người, 15–30' 1 người, trên 30' 1 người.
   - C5, trả lời bạn học AI ≤1 lượt: 12/20 (60%); 0 lượt: 5/20 (25%).
@@ -22,14 +22,6 @@
   - C4, cách xem: bỏ qua đoạn 8/20 (40%); tua nhanh ≥1.5x 7/20 (35%); vừa xem vừa làm việc khác 6/20 (30%).
   - C7, giải thích lại khái niệm chính mà không xem lại: 0/20 giải thích được, nhưng 18/20 bỏ trống (câu tuỳ chọn). **Không dùng câu này làm bằng chứng** vì bỏ trống không có nghĩa là không giải thích được.
   - C3, số bài pre-class mỗi tuần: trung vị 2, dùng cho số lần/tháng ở `spec.md` §2.
-
-Phỏng vấn nhiều vai thì đếm theo từng vai, không cộng chung.
-
-| | Vai | Gặp pain? | Số lần / 1 tháng qua | Lần gần nhất mất | Đang xoay xở bằng |
-|---|---|---|---|---|---|
-| P1 | | | | | |
-| P2 | | | | | |
-| P3 | | | | | |
 
 ## 3. ≥5 trích dẫn hoặc ví dụ nguyên văn (có nguồn, bỏ tên)
 
