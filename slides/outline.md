@@ -5,13 +5,14 @@
 
 | Trang (~5 phút tổng) | Nội dung | Nguồn |
 |---|---|---|
-| 1 · 30 giây | Nhóm, luồng A4 và bản mở rộng Lớp học tranh tài | `spec.md` §4, §10 · 3 phiếu trong `validation/log.md` |
-| 2 · 55 giây | Người dùng, pain, impact và lý do không chọn trợ giảng hỏi đáp | `evidence/summary.md` · `spec.md` §2 |
-| 3 · 90 giây | Giải pháp và demo live: B01 (thường, chốt đúng nguồn) và B05 (khó, hỏi vặn khi học viên đồng ý với ý sai) | `spec.md` §4 · `eval/benchmark.csv` |
-| 4 · 65 giây | 23 câu, lượt 1 → 2; lượt 7 chấm nháp; điều kiện đo trên người thật còn thiếu | `eval/report.md` · `validation/log.md` |
-| 5 · 60 giây | Chi phí / task thành công, 3 quy mô; quyết định làm tiếp và ưu tiên tuần sau | `cost/cost-estimate.md` · `validation/log.md` |
+| 1 · 30 giây | Giới thiệu nhóm H4ppy và ý chính: học viên tự giải thích cho bạn học AI. Nếu nhắc web Lớp học tranh tài, nói rõ đó là bản mở rộng; 3/3 phiếu muốn dùng web để ôn, không phải kết quả đo học A4. | `spec.md` §4, §10 · `validation/log.md` |
+| 2 · 55 giây | Khảo sát: 14/20 phải hỏi hoặc xem lại, khoảng 9 phút/lần. Nhật ký: 2.099/2.153 lượt câu hỏi xen video bị bỏ qua; 354/431 học viên mở video nhưng không nộp câu ôn. Khoảng 680 giờ/tháng là ước tính quy mô vấn đề (302 × 15 × 9 phút), không phải thời gian công cụ đã tiết kiệm. | `evidence/summary.md` · `spec.md` §2 |
+| 3 · 90 giây | Chạy `python run.py` để diễn hai ca độc lập cùng một ý hiểu nhầm: B05 (“ừ đúng rồi”, AI hỏi lại) và B01 (giải thích ứng dụng giữ lịch sử, AI chốt kèm mã `chatbot_is_app_around_model`). Chỉ ra giới hạn 2 lượt hỏi lại; vẫn sai thì sửa theo đoạn bài. Lời thoại trên slide được rút gọn, không đọc như bản ghi nguyên văn. | `spec.md` §4 · `eval/benchmark.csv` |
+| 4 · 65 giây | Lượt 1: 20/23 đã soát. Lượt 2: CSV ghi 21/23, B23 còn tranh luận. Lượt 7: 23/23 chấm nháp; từ chối đúng 5/5, không xác nhận ý sai 7/7, giữ giới hạn hỏi 2/2. Ví dụ cải tiến: B19 không còn được khen hiểu đúng chỉ vì đoán. Chưa kết luận đạt vì chưa có phép đo với học viên. | `eval/report.md` · `validation/log.md` |
+| 5 · 60 giây | Chi phí model mô phỏng 50 phiên; hai mức giá cho chi phí mỗi phiên thành công $0,00066 và $0,0038, tính theo 21/23 của CSV lượt 2. Quy mô 144/431/721 học viên: $1,16–$6,70 / $3,48–$20,05 / $5,82–$33,55 mỗi tháng. Ưu tiên đo số đúng trước → sau ở ≥5 phiên, ≥3 học viên L3 ngoài nhóm, ≥3 đoạn bài; mục tiêu ≥80% phiên có câu trả lời đúng sau phiên. | `cost/cost-estimate.md` · `validation/log.md` |
 
 - [x] [Bản HTML](demo-slides.html) và [PDF 5 trang](../demo-slides.pdf).
+- Xuất lại PDF: mở bản HTML trong Chrome/Edge, in **Lưu dưới dạng PDF**, bật **Đồ họa nền**, tắt **Đầu trang và chân trang**. Bản in tự dàn 5 trang 16:9, không kèm nút chuyển trang.
 - [x] [Video demo web `hackathon-demo.mp4` (3:29)](https://drive.google.com/file/d/1kzLabK15aN_Y1BEWBKOFemYfZozTXG80/view?usp=sharing) — đã mở được trình xem Drive khi chưa đăng nhập.
 - [ ] Xác nhận clip dự phòng có đủ hai ca A4 B01/B05; clip demo web không mặc nhiên thay cho hai ca này.
 - [ ] Chốt ai nói phần nào trước khi lên; tự kiểm bản demo trên máy trình chiếu.
