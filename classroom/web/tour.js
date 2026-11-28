@@ -3,6 +3,9 @@
 import { $, h, reducedMotion } from "./api.js";
 import { faceChipSVG } from "./faces.js";
 import * as store from "./store.js";
+import { goSlideTo, currentSlide, currentDoc } from "./slides.js";
+
+const START_SLIDE = 2;   // slide 1 là bìa, không có đoạn đánh số nên hướng dẫn luôn bắt đầu ở slide 2
 
 const SEEN_KEY = "lhtt.tour.v1";
 const PAD = 8;           // khoảng hở quanh phần tử
@@ -63,7 +66,7 @@ function targetOf(step) {
   return null;
 }
 
-export function startTour() {
+export async function startTour() {
   if (tour) return;
   localStorage.setItem(SEEN_KEY, "1");
   $("#btn-tour").classList.remove("tour-new");
@@ -80,11 +83,18 @@ export function startTour() {
   root.append(svg, ring, pop);
   root.addEventListener("mousedown", (e) => { if (!pop.contains(e.target)) e.preventDefault(); });
   document.body.append(root);
-  tour = { steps, i: -1, root, path, ring, pop, startTab: ctx.tab, prevFocus: document.activeElement, raf: 0, demo: new Map(), typer: 0 };
+  tour = { steps, i: -1, root, path, ring, pop, startTab: ctx.tab, startSlide: currentSlide(),
+    prevFocus: document.activeElement, raf: 0, demo: new Map(), typer: 0 };
   window.addEventListener("keydown", onKey, true);
   window.addEventListener("resize", schedulePlace);
   window.addEventListener("scroll", schedulePlace, true);
-  go(0, 1);
+  const t = tour;
+  const doc = currentDoc();
+  if (doc && doc.slides.length >= START_SLIDE && currentSlide() !== START_SLIDE) {
+    if (ctx.tab !== "study") ctx.goTab("study", { quiet: true });
+    await goSlideTo(START_SLIDE); // chờ vẽ xong slide + thẻ để các bước viết thẻ có chỗ khoanh
+  }
+  if (tour === t) go(0, 1);
 }
 
 function endTour() {
@@ -97,6 +107,7 @@ function endTour() {
   cancelAnimationFrame(t.raf);
   clearInterval(t.typer);
   for (const [control, value] of t.demo) control.value = value; // trả các ô về như trước khi xem hướng dẫn
+  if (t.startSlide && currentSlide() !== t.startSlide) goSlideTo(t.startSlide); // về lại slide đang xem trước đó
   if (ctx.tab !== t.startTab) ctx.goTab(t.startTab, { quiet: true });
   if (reducedMotion) t.root.remove();
   else { t.root.classList.add("leaving"); setTimeout(() => t.root.remove(), 200); }
