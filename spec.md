@@ -136,10 +136,10 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 - Kết quả ở mốc CP3 là **20/23 (87%)**, `run-1@20261128-094231`, đã được thành viên nhóm soát. Mốc CP4 `run-2@20261128-115432` đạt **21/23 (91%)** theo chấm nháp. Bản cuối `run-7@20261128-121425` đạt **23/23 (100%)** theo chấm nháp với câu hỏi vặn do model sinh. Bản cuối đủ ≥ 80% và điều kiện cứng (1)–(3). Còn chờ thành viên nhóm duyệt bản cuối và đo điều kiện (4) `tra_loi_dung_sau_phien` (issue #12) để kết luận “đạt”. [Báo cáo](eval/report.md) · [Hồ sơ đánh giá](eval/README.md)
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
-- Persona + giá: `cost/personas.yaml` · lượt mô phỏng: `cost/simulate-1.csv` (50 phiên, seed 42, run ID `simulate-1@20261128-123454`) · **đo token trên `mistral-medium-latest`, tính giá `gemini-3.1-flash-lite` và `gemini-4-hydrogen`** (bảng giá BTC 25/11/2026)
-- Chi phí / task thành công: $0.00043 (model `gemini-3.1-flash-lite`) · $0.0025 (model `gemini-4-hydrogen`) — tỉ lệ đạt tạm lấy từ **lượt 1** (20/23, đo trên `qwen3.7-plus`); có lượt 2 thì chạy lại thành `simulate-2`
-- Chi phí / tháng ở quy mô thật: thấp (144 người) $0.73–$4.22 · cơ sở (431 người) $2.20–$12.63 · cao (721 người) $3.67–$21.12 (model Nhỏ – model Lớn) → chi tiết `cost/cost-estimate.md`
-- So với impact / người / tháng (§2): đáng làm — chi phí $0.005–$0.03 / người / tháng so với ≈ 135 phút hỏi lại / xem lại mỗi người gặp pain; chi phí model không phải điểm nghẽn, giá trị phụ thuộc vào việc học viên học được thật (metric `tra_loi_dung_sau_phien`)
+- Persona + giá: `cost/personas.yaml` · lượt mô phỏng: `cost/simulate-2.csv` (50 phiên, seed 42, run ID `simulate-2@20261128-125144`; lượt trước `simulate-1` giữ nguyên) · **đo token trên `mistral-medium-latest`, tính giá `gemini-3.1-flash-lite` và `gemini-4-hydrogen`** (bảng giá BTC 25/11/2026)
+- Chi phí / task thành công: $0.00066 (model `gemini-3.1-flash-lite`) · $0.0038 (model `gemini-4-hydrogen`) — tỉ lệ đạt **lượt 2** 21/23 (91%, đo trên `qwen3.7-plus`); token đo trên code `agent.py` hiện tại (sau lượt 2)
+- Chi phí / tháng ở quy mô thật: thấp (144 người) $1.16–$6.70 · cơ sở (431 người) $3.48–$20.05 · cao (721 người) $5.82–$33.55 (model Nhỏ – model Lớn) → chi tiết `cost/cost-estimate.md`
+- So với impact / người / tháng (§2): đáng làm — chi phí $0.008–$0.05 / người / tháng so với ≈ 135 phút hỏi lại / xem lại mỗi người gặp pain; chi phí model không phải điểm nghẽn, giá trị phụ thuộc vào việc học viên học được thật (metric `tra_loi_dung_sau_phien`)
 
 ## §9. Rủi ro & an toàn
 - Dữ liệu: đã ẩn danh gì, không thu gì, không đưa gì vào model gói miễn phí:
@@ -164,7 +164,7 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): `data/prec
 | 28/11 trước 10:00 | Thêm 9 câu thử (B15–B23) vào `eval/benchmark.csv` → 23 câu; thêm 3 câu nguồn `nguoi_dung` từ khảo sát (S4, S13 câu 5a, S14); phủ `thuong` (3→6), `luot ≥ 3` (1→2), `KHONG_CO` (1→2), `TU_CHOI` (3→5); cập nhật §5 bảng kịch bản + §7 dòng đếm câu + `eval/README.md` §2 | Issue #9 — CP3 bộ câu thử 20–30 câu + spec §5 |
 | 28/11 (CP3) | Chạy eval lượt 1 `run-1@20261128-094231` trên 23 câu bằng `qwen3.7-plus`: 20/23 (87%), điền §7 dòng Kết quả và `eval/report.md` mục 1–2; chạy thử mô phỏng chi phí 10 phiên; `evidence/summary.md` ghi rõ không phỏng vấn (khảo sát 20 phiếu thay thế) | README: lượt 1 trước CP3 · lỗi B09, B22 (hỏi vặn chung chung), B19 (chốt kèm lời khen) là đầu vào cho lần cải tiến trước lượt 2 |
 | 28/11 (CP4, trước lượt 2) | Làm rõ trong prompt A4 rằng ở lượt cuối vẫn cần lời học viên thể hiện quan hệ cốt lõi trước khi xác nhận đã hiểu | Issue #24 · B19: một câu đoán tên đối tượng chưa cho thấy học viên hiểu cơ chế |
-| 28/11 trước 14:30 | Mô phỏng chi phí 50 phiên (`cost/simulate-1.csv`), điền `cost/cost-estimate.md` và §8; `cost/personas.yaml` đổi số phiên / tháng từ trung vị sang trung bình (2 / 10 / 23) cho khớp §2 | Issue #25 — §8 cần chi phí / task thành công; persona phải khớp số impact ở §2 |
+| 28/11 trước 14:30 | Mô phỏng chi phí 50 phiên: `simulate-1` (tỉ lệ đạt lượt 1) rồi `simulate-2` (tỉ lệ đạt lượt 2, 21/23) — §8 và `cost/cost-estimate.md` dùng `simulate-2`, giữ `simulate-1`; `cost/personas.yaml` đổi số phiên / tháng sang trung bình (2 / 10 / 23) cho khớp §2 | Issue #25 — §8 cần chi phí / task thành công theo lượt 2; persona phải khớp số impact ở §2 |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
