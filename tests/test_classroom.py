@@ -13,7 +13,7 @@ from collections import Counter
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from classroom import coach, match, rag, server  # noqa: E402
+from classroom import bot_rag, coach, match, rag, server  # noqa: E402
 
 SLIDES = [
     ("Bìa bài giảng Khoa học tự nhiên", ["Khoa học tự nhiên lớp 5"]),
@@ -441,8 +441,10 @@ class TestOfflineMatch(DocsFixtureTest):
             for a in q["answers"]:
                 own = {c["id"]: c for c in m.contestants[a["by"]]["_cards"]}
                 used = [own[u["id"]] for u in a["used_cards"]]
-                # mỗi thẻ dùng phải xuất hiện nguyên văn trong câu trả lời (trừ khi minh cắt ngắn)
-                if a["by"] != "minh":
+                if a["by"] == "player":
+                    for cite in a["citations"]:
+                        self.assertIn(cite["excerpt"], own[cite["card_id"]]["content"])
+                elif a["by"] != "minh":
                     for c in used:
                         self.assertIn(c["content"], a["text"])
                 self.assertTrue({u["id"] for u in a["used_cards"]} <= set(own))
@@ -526,21 +528,40 @@ class TestOfflineMatch(DocsFixtureTest):
             m2.remind("khong_co")
         self.assertEqual(cm.exception.status, 400)
 
-    def test_irrelevant_card_gets_unsure_and_no_doc_phrases(self):
-        deck = self.doc()
-        topic = coach.topics(deck)[0]
-        m = match.create_match(deck, topic=topic, seed=7)
-        m.set_cards([{
-            "id": "c_lienquan", "title": "Tim", "own": True,
-            "content": "Tim có nhiệm vụ bơm máu đi khắp toàn bộ cơ thể người",
+    def test_irrelevant_card_gets_no_credit_even_in_rebuttal(self):
+        m = self._match(cards=[{
+            "id": "c_lienquan", "title": "Nước và chu trình nước", "own": True,
+            "content": "Tim có nhiệm vụ bơm máu đi khắp toàn bộ cơ thể",
             "type": "concept",
         }])
+        m.next(); m.next(); m.next(); m.next()
+        m.remind("c_lienquan")  # nhắc bài không biến thẻ lạc đề thành nguồn
+        m.next()
         s = m.next()
-        ans = next(a for a in s["questions"][0]["answers"] if a["by"] == "player")
-        self.assertIsNotNone(ans["unsure"])
-        # câu trả lời không mượn chữ chỉ có trong tài liệu (ngoài thẻ của mình)
-        doc_only = "quang hợp"
-        self.assertNotIn(rag.normalize(doc_only), rag.normalize(ans["text"]))
+        for q in s["questions"]:
+            ans = next(a for a in q["answers"] if a["by"] == "player")
+            self.assertEqual((ans["text"], ans["score"]), (bot_rag.NOT_KNOWN, 0))
+            self.assertEqual(ans["citations"], [])
+            self.assertEqual(ans["used_cards"], [])
+        self.assertTrue(s["review"]["gaps"])
+
+    def test_shared_words_do_not_replace_the_topic(self):
+        question = 'Trình bày kiến thức về “Gọi công cụ (tool calling)”.'
+        card = {"id": "agent", "title": "Agent", "type": "concept",
+                "content": "Agent có thể chọn bước và công cụ phù hợp."}
+        self.assertEqual(bot_rag.answer(question, [card])["text"], bot_rag.NOT_KNOWN)
+        card["content"] = "Tool calling trả về tên công cụ và tham số."
+        self.assertEqual(bot_rag.answer(question, [card])["text"], "“Tool calling trả về tên công cụ và tham số.” [1]")
+
+    def test_partial_chatbot_comparison_does_not_earn_credit(self):
+        excerpt = "Khác chatbot thường: chatbot chỉ trả lời, agent hành động để đạt mục tiêu"
+        q = {"kind": "recall", "_rubric": [{"criterion": "Phân biệt chatbot", "slide": 2, "excerpt": excerpt}]}
+        answer = {"citations": [{"excerpt": "Agent hành động để đạt mục tiêu"}]}
+        partial = match._grade_player_offline(q, answer)
+        self.assertEqual((partial["score"], partial["covered_idx"]), (0, []))
+        self.assertIn("còn thiếu: Phân biệt chatbot (slide 2)", partial["comment"])
+        answer["citations"][0]["excerpt"] = excerpt
+        self.assertEqual(match._grade_player_offline(q, answer)["score"], 10)
 
     def test_rematch_same_topic_different_question(self):
         m1 = self._match(seed=11)
@@ -571,16 +592,23 @@ class TestOfflineMatch(DocsFixtureTest):
 
 
 class TestModelCoach(DocsFixtureTest):
-    def _match_with_stub(self, stub):
+    def _match_with_stub(self, stub, content=None):
         deck = self.doc()
         m = match.Match(deck, topic=coach.topics(deck)[0], call_model=stub, seed=3)
-        m.set_cards([{"id": "mine1", "title": "Thẻ của mình", "content": "Nội dung thẻ của bot",
-                      "type": "rule", "own": True, "source": None}])
+        m.set_cards([{"id": "mine1", "title": "Chu trình nước",
+                      "content": content if content is not None else
+                      "Chu trình nước có giai đoạn bay hơi. Nước ngưng tụ thành mây.",
+                      "type": "rule", "own": True, "source": {"slide": 2}}])
         return deck, m
 
     @staticmethod
     def _question_stub():
         def stub(system, user):
+            if '"passage_ids"' in system:
+                return {"text": json.dumps({
+                    "passage_ids": [99, True, "1", 1, 1],
+                    "answer": "Chu trình nước sinh ra khí oxy.",
+                })}
             if "Sổ tay của bạn" in user:  # lượt trả lời của bot
                 return {"text": json.dumps({
                     "answer": "Theo thẻ của mình: nội dung thẻ của bot.",
@@ -590,20 +618,61 @@ class TestModelCoach(DocsFixtureTest):
             if '"grades"' in user:  # lượt chấm của cô Linh: chấm cả hai câu trả lời một lần
                 return {"text": json.dumps({"grades": [
                     {"by": "vy", "score": 99, "comment": "ok", "covered": [0, 42]},
-                    {"by": "player", "score": -5, "comment": "ok", "covered": []}]}),
+                    {"by": "player", "evidence": []}]}),
                     "model": "stub", "tokens_in": 0, "tokens_out": 0}
             # cô Linh soạn câu 1 và câu 2 trong một lượt gọi
             return {"text": "```json\n" + json.dumps({
-                "recall": {"text": "Câu hỏi nhớ?", "rubric": []},
+                "recall": {"text": "Chu trình nước có các giai đoạn nào?", "rubric": []},
                 "apply": {"text": "Câu hỏi áp dụng?", "rubric": []}}) + "\n```",
                 "model": "stub", "tokens_in": 0, "tokens_out": 0}
         return stub
 
-    def test_used_card_ids_outside_own_cards_dropped(self):
-        deck, m = self._match_with_stub(self._question_stub())
-        mc = match.ModelCoach(deck, self._question_stub(), __import__("random").Random(1))
-        ans = mc.answer(m, 0, "player")
+    def test_answer_uses_only_cited_quotes_from_own_deck(self):
+        _, m = self._match_with_stub(self._question_stub())
+        expected = "“Chu trình nước có giai đoạn bay hơi.” [1] “Nước ngưng tụ thành mây.” [1]"
+        s = m.next()
+        ans = next(a for a in s["questions"][0]["answers"] if a["by"] == "player")
+        self.assertEqual(ans["text"], expected)
         self.assertEqual([u["id"] for u in ans["used_cards"]], ["mine1"])
+        self.assertEqual(ans["citations"], [{
+            "number": 1, "card_id": "mine1", "title": "Chu trình nước", "slide": 2,
+            "excerpt": "Chu trình nước có giai đoạn bay hơi. Nước ngưng tụ thành mây.",
+        }])
+        log = next(e for e in s["log"] if e["by"] == "player" and e["kind"] == "answer")
+        self.assertEqual(log["citations"], ans["citations"])
+
+    def test_without_relevant_cards_player_does_not_call_model(self):
+        def no_selector(*args):
+            self.fail("Bé Bot không được gọi model khi không có đoạn liên quan")
+
+        self.assertEqual(bot_rag.answer("Chu trình nước?", [], call_model=no_selector)["text"], bot_rag.NOT_KNOWN)
+        stub = self._question_stub()
+
+        def guarded_model(system, user):
+            if '"passage_ids"' in system:
+                no_selector()
+            return stub(system, user)
+
+        _, m = self._match_with_stub(guarded_model, content="Tim bơm máu đi khắp cơ thể.")
+        s = m.next()
+        ans = next(a for a in s["questions"][0]["answers"] if a["by"] == "player")
+        self.assertEqual((ans["text"], ans["score"]), (bot_rag.NOT_KNOWN, 0))
+        self.assertEqual(ans["citations"], [])
+
+    def test_only_invalid_ids_does_not_accept_free_text(self):
+        stub = self._question_stub()
+
+        def invalid_ids(system, user):
+            if '"passage_ids"' in system:
+                return {"text": '{"passage_ids":[0, -1, 99, "1", 1.0, true], "answer":"Câu bịa."}'}
+            if '"grades"' in user:
+                self.assertNotIn('by="player"', user)
+            return stub(system, user)
+
+        _, m = self._match_with_stub(invalid_ids)
+        ans = next(a for a in m.next()["questions"][0]["answers"] if a["by"] == "player")
+        self.assertEqual((ans["text"], ans["score"]), (bot_rag.NOT_KNOWN, 0))
+        self.assertEqual(ans["citations"], [])
 
     def test_invalid_json_raises_runtime_error(self):
         def stub(system, user):
@@ -618,10 +687,50 @@ class TestModelCoach(DocsFixtureTest):
     def test_grade_clamps_and_filters_criteria(self):
         deck, m = self._match_with_stub(self._question_stub())
         mc = match.ModelCoach(deck, self._question_stub(), __import__("random").Random(1))
-        v = mc.grade_all(m, 0, [{"by": "vy", "text": "tra loi"}, {"by": "player", "text": "tra loi"}])
-        self.assertEqual([x["score"] for x in v], [10, 0])
+        v = mc.grade_all(m, 0, [{"by": "vy", "text": "tra loi"}])
+        self.assertEqual([x["score"] for x in v], [10])
         n = len(m.questions[0]["_rubric"])
         self.assertTrue(all(0 <= i < n for i in v[0]["covered_idx"]))  # chỉ số tiêu chí ngoài phạm vi bị bỏ
+
+    def test_semantic_grade_credits_paraphrase_only_with_cited_evidence(self):
+        source = SLIDES[1][1][1]
+        full = "Chu trình nước: nước biến thành hơi; hơi lạnh lại hóa thành giọt rồi rơi xuống thành mưa."
+        partial = "Chu trình nước bắt đầu khi nước hóa thành hơi."
+        cases = [
+            (full, "full", 1, full, 10, [0], "Đủ căn cứ từ thẻ: Các giai đoạn (slide 2)"),
+            (partial, "partial", 1, partial, 5, [], "đúng một phần: Các giai đoạn (slide 2)"),
+            (full, "full", 1, source, 0, [], "còn thiếu: Các giai đoạn (slide 2)"),
+            (full, "full", 9, full, 0, [], "còn thiếu: Các giai đoạn (slide 2)"),
+        ]
+        for content, credit, citation, quote, score, covered, feedback in cases:
+            with self.subTest(credit=credit, citation=citation, score=score):
+                base = self._question_stub()
+
+                def stub(system, user):
+                    if "Soạn 2 câu hỏi" in user:
+                        return {"text": json.dumps({
+                            "recall": {"text": "Chu trình nước có các giai đoạn nào?", "rubric": [
+                                {"criterion": "Các giai đoạn", "slide": 2, "excerpt": source}
+                            ]},
+                            "apply": {"text": "Câu hỏi áp dụng?", "rubric": []},
+                        })}
+                    if '"grades"' in user:
+                        return {"text": json.dumps({"grades": [
+                            {"by": "vy", "score": 2, "comment": "Thiếu ý.", "covered": []},
+                            {"by": "player", "score": 9, "comment": "Không dùng nhận xét tự do.", "evidence": [
+                                {"criterion": 0, "credit": credit, "quotes": [{"n": citation, "text": quote}]}
+                            ]},
+                        ]})}
+                    return base(system, user)
+
+                _, m = self._match_with_stub(stub, content=content)
+                self.assertEqual(m.questions[0]["_rubric"][0]["excerpt"], source)
+                state = m.next()
+                ans = next(a for a in state["questions"][0]["answers"] if a["by"] == "player")
+                self.assertEqual(ans["text"], f"“{content}” [1]")
+                self.assertEqual(ans["score"], score)
+                self.assertIn(feedback, ans["comment"])
+                self.assertEqual(m.questions[0]["answers"][-1]["_covered_idx"], covered)
 
     def test_one_model_call_for_questions_1_and_2(self):
         calls = []

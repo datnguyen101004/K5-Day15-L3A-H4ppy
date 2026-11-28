@@ -45,3 +45,13 @@ export function openModal(title, buildContent, opts = {}) {
   }
   return close;
 }
+
+export function answerCitations(citations) {
+  return h("details", { class: "answer-citations" }, [
+    h("summary", { class: "used-label", text: `Trích dẫn từ thẻ (${citations.length})` }),
+    citations.map(({ number, title, excerpt, slide }) => h("div", { class: "source-block" }, [
+      h("p", { class: "sug-source", text: `[${number}] ${title || "Thẻ không tên"}${slide ? ` · Slide ${slide}` : ""}` }),
+      h("blockquote", { class: "sug-excerpt", text: excerpt }),
+    ])),
+  ]);
+}

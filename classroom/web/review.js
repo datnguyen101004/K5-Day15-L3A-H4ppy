@@ -3,7 +3,7 @@
 import { $, $$, h, post, run, toast, announce, uid } from "./api.js";
 import { faceChipSVG, LOOK_OF, KIND_LABELS, TYPE_LABELS, TYPE_COLORS } from "./faces.js";
 import { showArenaSub, sceneApi } from "./arena.js";
-import { openModal } from "./ui.js";
+import { openModal, answerCitations } from "./ui.js";
 import * as store from "./store.js";
 
 let ctx = null;
@@ -129,7 +129,8 @@ function renderQuestions(state) {
         a.target ? h("p", { class: "answer-target", text: `Phản biện câu 2 của ${nameOf(state, a.target.by)}` }) : null,
         h("p", { class: "q-answer-text", text: a.text }),
       );
-      box.append(h("p", { class: "used-label", text: "Thẻ đã dùng" }), usedCardChips(a.used_cards));
+      if (a.citations?.length) box.append(answerCitations(a.citations));
+      else if (a.by !== "player") box.append(h("p", { class: "used-label", text: "Thẻ đã dùng" }), usedCardChips(a.used_cards));
       if (a.unsure) box.append(h("p", { class: "unsure-callout", text: `Chưa chắc: ${a.unsure}` }));
       if (a.comment) box.append(h("p", { class: "verdict-note", text: `Cô Linh: ${a.comment}` }));
       answers.append(box);
@@ -218,7 +219,7 @@ function openFixCard(state, g, status) {
       ctx.refreshNotebook();
       status.hidden = false;
       announce(`Đã lưu thẻ “${title}” cho bot.`);
-      toast(`Đã lưu thẻ “${title}” — đấu lại để xem bot trả lời được chưa.`);
+      toast(`Đã lưu thẻ “${title}” — đấu lại để xem bot trả lời được chưa.`, { success: true });
       close();
     };
     body.append(

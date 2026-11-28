@@ -75,7 +75,7 @@ export async function busy(btn, statusEl, statusText, fn) {
 
 export function toast(message, opts = {}) {
   const root = $("#toast-root");
-  const el = h("div", { class: "toast", role: "status" });
+  const el = h("div", { class: `toast${opts.success ? " toast-success" : ""}`, role: "status" });
   el.append(h("span", { text: message }));
   if (opts.retry) {
     el.append(h("button", { type: "button", class: "toast-btn", text: "Thử lại", onclick: () => { dismiss(); opts.retry(); } }));
@@ -83,7 +83,9 @@ export function toast(message, opts = {}) {
   const x = h("button", { type: "button", class: "toast-btn", "aria-label": "Đóng thông báo", text: "Đóng", onclick: dismiss });
   el.append(x);
   root.append(el);
+  const timer = opts.retry ? null : setTimeout(dismiss, 5000);
   function dismiss() {
+    clearTimeout(timer);
     if (!el.isConnected) return;
     if (reducedMotion) { el.remove(); return; }
     el.classList.add("leaving");

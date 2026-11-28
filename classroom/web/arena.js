@@ -3,7 +3,7 @@
 import { $, $$, h, api, post, enc, run, toast, announce, reducedMotion, sleep, busy } from "./api.js";
 import * as store from "./store.js";
 import { TYPE_LABELS, TYPE_COLORS, faceChipSVG, LOOK_OF, CONTESTANT_COLORS, OPPONENT_STRENGTHS, KIND_LABELS } from "./faces.js";
-import { openModal } from "./ui.js";
+import { openModal, answerCitations } from "./ui.js";
 
 let ctx = null;
 let scene = null;
@@ -12,6 +12,7 @@ let speechRAF = 0;
 let speechTimer = 0;
 let playing = false;
 const prevScores = {};
+let feedMatchId = null;
 
 /* ---------- Khởi tạo ---------- */
 
@@ -237,6 +238,10 @@ async function startMatch() {
 export function enterArena(state, botName) {
   if (botName) ctx.botName = botName;
   showArenaSub("arena");
+  if (feedMatchId === state.id) return;
+  feedMatchId = state.id;
+  $("#feed").replaceChildren();
+  lastPlayedSeq = 0;
   run(async () => {
     await ensureScene();
     setupStage(state);
@@ -499,7 +504,8 @@ function addTranscript(state, entry) {
   const feed = $("#feed");
   const bubble = h("div", { class: "bubble" + (entry.by === "linh" ? " teacher" : entry.kind === "system" ? " system" : "") });
   bubble.append(h("span", { class: "who", text: nameOf(entry.by) }), h("span", { class: "txt", text: entry.text }));
-  if (entry.used_cards && entry.used_cards.length) bubble.append(usedCardChips(entry.used_cards));
+  if (entry.citations?.length) bubble.append(answerCitations(entry.citations));
+  else if (entry.used_cards?.length) bubble.append(usedCardChips(entry.used_cards));
   feed.append(bubble);
   feed.scrollTop = feed.scrollHeight;
 }
@@ -510,7 +516,8 @@ function addAnswerEntry(state, q, a) {
   bubble.append(h("span", { class: "who", text: `${nameOf(a.by)}: ${a.score}/10` }));
   if (a.target) bubble.append(h("p", { class: "answer-target", text: `Phản biện câu 2 của ${nameOf(a.target.by)}` }));
   bubble.append(h("span", { class: "txt", text: a.text }));
-  bubble.append(h("p", { class: "used-label", text: "Thẻ đã dùng" }), usedCardChips(a.used_cards));
+  if (a.citations?.length) bubble.append(answerCitations(a.citations));
+  else if (a.by !== "player") bubble.append(h("p", { class: "used-label", text: "Thẻ đã dùng" }), usedCardChips(a.used_cards));
   if (a.unsure) bubble.append(h("p", { class: "unsure-callout", text: `Chưa chắc: ${a.unsure}` }));
   if (a.comment) bubble.append(h("p", { class: "verdict-note", text: `Cô Linh: ${a.comment}` }));
   feed.append(bubble);

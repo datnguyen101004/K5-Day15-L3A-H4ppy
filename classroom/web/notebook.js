@@ -69,22 +69,20 @@ function cardTile(c) {
 
 /* ---------- Modal xem / sửa thẻ ---------- */
 
-export function openNotebookCard(cardId) {
-  ctx.goTab("notebook");
-  renderNotebook();
-  openCardModal(cardId);
+export function openNotebookCard(cardId, onChange) {
+  openCardModal(cardId, onChange);
 }
 
-function openCardModal(cardId) {
+function openCardModal(cardId, onChange) {
   const card = cardId ? store.getCard(cardId) : null;
   if (cardId && !card) { toast("Không tìm thấy thẻ trong sổ tay."); return; }
   let editing = !card; // thẻ mới mở luôn ở chế độ sửa
   openModal(card ? `Thẻ: ${card.title}` : "Viết thẻ mới", (body, close) => {
-    body.append(buildCardForm(card, editing, close));
+    body.append(buildCardForm(card, editing, close, onChange));
   });
 }
 
-function buildCardForm(card, editing, close) {
+function buildCardForm(card, editing, close, onChange) {
   const isNew = !card;
   const titleIn = h("input", { type: "text", value: card ? card.title : "", maxlength: "120", "aria-label": "Tiêu đề thẻ" });
   const contentIn = h("textarea", { rows: 6, "aria-label": "Nội dung thẻ" });
@@ -152,14 +150,15 @@ function buildCardForm(card, editing, close) {
           if (isNew) {
             const created = store.addCard({ id: uid("c"), title, content, type: typeSel.value, own: true, source: null });
             announce(`Đã tạo thẻ “${created.title}”.`);
-            toast(`Đã tạo thẻ “${created.title}”.`);
+            toast(`Đã tạo thẻ “${created.title}”.`, { success: true });
           } else {
             store.updateCard(card.id, { title, content, type: typeSel.value });
             announce(`Đã lưu thay đổi cho thẻ “${title}”.`);
-            toast(`Đã lưu thẻ “${title}”.`);
+            toast(`Đã lưu thẻ “${title}”.`, { success: true });
           }
           ctx.refreshNotebook();
           close();
+          onChange?.();
         },
       }),
       h("button", { type: "button", class: "btn btn-ghost", text: "Huỷ", onclick: isNew ? close : paintView }),
@@ -177,6 +176,7 @@ function buildCardForm(card, editing, close) {
           toast(`Đã xoá thẻ “${card.title}”.`);
           ctx.refreshNotebook();
           close();
+          onChange?.();
         },
       }),
       h("button", { type: "button", class: "btn btn-ghost", text: "Giữ lại", onclick: paintView }),

@@ -175,7 +175,7 @@ function criterionList(items, kind) {
 function renderResult(box, r) {
   const last = qz.i === qz.list.length - 1;
   const tier = r.score >= 8 ? "good" : r.score >= 5 ? "ok" : "low";
-  box.replaceChildren(
+  box.replaceChildren(...[
     h("div", { class: "quiz-verdict" }, [
       h("span", { class: "tour-face", html: faceChipSVG("teacher"), "aria-hidden": "true" }),
       h("div", {}, [
@@ -191,7 +191,7 @@ function renderResult(box, r) {
     h("div", { class: "quiz-actions" }, [
       h("button", { type: "button", class: "btn btn-primary", id: "quiz-next", text: last ? "Xem kết quả" : "Câu tiếp theo", onclick: nextQuestion }),
     ]),
-  );
+  ].filter(Boolean));
   box.hidden = false;
   $("#quiz-next").focus({ preventScroll: true });
 }

@@ -504,7 +504,12 @@ function renderSuggestion(sug, num, savedCardId) {
       : h("p", { class: "calm-note", text: "Thẻ đã bị xoá khỏi sổ tay." }));
     actions.replaceChildren(...(saved
       ? [h("span", { class: "saved-note", text: "Đã lưu vào sổ tay" }),
-        h("button", { type: "button", class: "btn", text: "Mở thẻ", onclick: () => study.ctx.openNotebookCard(cardId) })]
+        h("button", { type: "button", class: "btn", text: "Mở thẻ", onclick: () => {
+          study.ctx.openNotebookCard(cardId, () => {
+            paintDone(cardId);
+            actions.querySelector("button")?.focus();
+          });
+        } })]
       : [h("button", { type: "button", class: "btn btn-primary", text: "Viết lại thẻ", onclick: () => paintEdit(true) })]));
   }
 
@@ -527,7 +532,7 @@ function saveSuggestion(sug, cardFields) {
   });
   store.markSaved(study.docId, sug.id, card.id);
   announce(`Đã lưu thẻ “${card.title}” vào sổ tay.`);
-  toast(`Đã lưu thẻ “${truncate(card.title, 40)}” vào sổ tay.`);
+  toast(`Đã lưu thẻ “${truncate(card.title, 40)}” vào sổ tay.`, { success: true });
   study.ctx.refreshNotebook();
   renderSuggestions();
 }
