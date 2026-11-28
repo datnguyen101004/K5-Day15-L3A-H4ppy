@@ -32,15 +32,17 @@ Dataset nào, xử lý gì: tóm 2–3 dòng từ `data/DATA_CARD.md`.
 
 `python run.py eval` → `eval/run-N.csv` + `traces/run-N.jsonl` · điền cột `pass` · `python run.py score eval/run-N.csv`
 
-## 5. Đã chạy gì
+## 5. Các mốc đánh giá và bản cuối
 
 | Lượt | Run ID | Model | Cấu hình (prompt / công cụ / thay đổi) | Đạt / tổng | % | Đạt chuẩn? |
 |---|---|---|---|---|---|---|
 | 1 | run-1@20261128-094231 | qwen3.7-plus | main@5f6b163: luồng A4 (`get_passage` + 1 lượt gọi model đối chiếu), prompt sau PR #19 | 20/23 | 87% | Đủ ≥ 80% và điều kiện (1)–(3); điều kiện (4) chưa đo → chưa kết luận |
-| 2 | | | | __/__ | | |
+| 2 | run-2@20261128-115432 | qwen3.7-plus | Luồng A4 (`get_passage` + 1 lượt gọi model khi có đoạn gốc). Prompt yêu cầu lời học viên thể hiện quan hệ cốt lõi mới xác nhận đã hiểu ở lượt cuối | 21/23 | 91% | Chấm nháp đủ ≥ 80% và điều kiện (1)–(3). Điều kiện (4) chưa đo → chưa kết luận |
+| 7 | run-7@20261128-121425 | qwen3.7-plus | Model trích hai yếu tố và hành động từ nguồn. Khi cần hỏi về sự đánh đổi, prompt thứ hai sinh câu hỏi từ các thông tin đó | 23/23 | 100% | Chấm nháp đủ ≥ 80% và điều kiện (1)–(3). Điều kiện (4) chưa đo → chưa kết luận |
 
-Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
+Kết quả và bằng chứng cho bản cuối nằm ở [lượt 7](run-7.csv) và [trace lượt 7](../traces/run-7.jsonl).
 
 ## 6. Lỗi chính
 
-Tóm 2–3 dòng từ `eval/report.md`: nhóm lỗi lớn nhất · đã sửa gì · còn lại gì.
+Lượt 2 sửa lỗi xác nhận quá sớm ở B19. Agent chốt đúng nguồn và nói chưa xác nhận được lời giải thích khi học viên chỉ đoán.
+B09 và B22 đều qua ở lượt 7 với câu hỏi do model sinh từ đoạn gốc. Hai câu này có hai lần gọi model mỗi câu. Phần chấm còn chờ thành viên nhóm duyệt và chỉ số học sau phiên chưa đo. [Báo cáo đánh giá](report.md)
