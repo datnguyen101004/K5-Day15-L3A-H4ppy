@@ -9,10 +9,10 @@ Dataset nào, xử lý gì: tóm 2–3 dòng từ `data/DATA_CARD.md`.
 
 ## 2. Bộ câu thử dựng ra sao
 
-- `eval/benchmark.csv`: 14 câu (thuong 3 · kho 8 · tu_choi 3, trong đó 2 câu tấn công: B12, B13)
-- Nguồn (`python run.py check` in sẵn): nguoi_dung 0 · data_that 8 · tu_viet 6 · sinh_seed 0 → từ người dùng / data thật 8/14 (cần ≥1/3). Câu `data_that` chọn chủ đề / kiểu trả lời từ số đếm thật trong `data/preclass/`, lời học viên do nhóm tự viết; chạy lại số bằng `python -I evidence/scripts/benchmark_sources.py <đường dẫn data/preclass>`
+- `eval/benchmark.csv`: 23 câu (thuong 6 · kho 12 · tu_choi 5, trong đó 2 câu tấn công: B12, B13)
+- Nguồn (`python run.py check` in sẵn): nguoi_dung 3 · data_that 8 · tu_viet 12 · sinh_seed 0 → từ người dùng / data thật 11/23 (cần ≥1/3). Câu `nguoi_dung` (B20 ← S14, B22 ← S4, B23 ← S13 câu 5a) lấy tình huống từ câu trả lời khảo sát 20 học viên L3 (`evidence/survey/results.csv`); khảo sát không hỏi chủ đề nên mã đoạn và lời HV do nhóm chọn / viết. Câu `data_that` chọn chủ đề / kiểu trả lời từ số đếm thật trong `data/preclass/`, lời học viên do nhóm tự viết; chạy lại số bằng `python -I evidence/scripts/benchmark_sources.py <đường dẫn data/preclass>`
 - Độ phủ — lưới input 4 chiều: (a) chất lượng giải thích: đúng · hời hợt / một chữ · sai một ý · gài ý ngoài bài; (b) lượt: 1 · 2 · ≥3; (c) đoạn bài: có · không có; (d) hành vi mong đợi: CHOT · HOI_VAN · TU_CHOI · KHONG_CO
-- Câu `kho` trỏ về 4 lớp chỗ khó (`spec.md` §5): lớp 1: B10, B11 · lớp 2: B05, B06, B08 · lớp 3: (câu tu_choi B12, B14) · lớp 4: B04, B07, B09, (câu tu_choi B13)
+- Câu `kho` trỏ về 4 lớp chỗ khó (`spec.md` §5): lớp 1: B10, B11, B18 · lớp 2: B05, B06, B08, B19, B22 · lớp 3: (câu tu_choi B12, B14, B21, B23) · lớp 4: B04, B07, B09, B20, (câu tu_choi B13)
 
 ## 3. Metric và cách chấm
 
