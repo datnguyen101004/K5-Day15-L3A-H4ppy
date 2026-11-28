@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "pdfjs-dist": "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.2.67/build/pdf.min.mjs"
+  }
+}
+</script>
+</head>
+<body>
+<main id="app">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <g fill="#FFB7C9" stroke="#3B2F4A" stroke-width="1.8">
+          <ellipse cx="20" cy="12" rx="5" ry="8"/>
+          <ellipse cx="20" cy="12" rx="5" ry="8" transform="rotate(72 20 20)"/>
+          <ellipse cx="20" cy="12" rx="5" ry="8" transform="rotate(144 20 20)"/>
+          <ellipse cx="20" cy="12" rx="5" ry="8" transform="rotate(216 20 20)"/>
+          <ellipse cx="20" cy="12" rx="5" ry="8" transform="rotate(288 20 20)"/>
+        </g>
+        <circle cx="20" cy="20" r="4.4" fill="#FFD45C" stroke="#3B2F4A" stroke-width="1.8"/>
+      </svg>
+      <div class="brand-text">
+        <h1>Lớp học tranh tài</h1>
+        <p class="brand-sub">Bạn làm huấn luyện viên cho bot của mình</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <label class="doc-picker">
+        <span class="field-label">Tài liệu</span>
+        <select id="doc-select" aria-label="Chọn tài liệu"></select>
+      </label>
+      <p id="mode-badge" class="mode-badge" hidden></p>
+      <button type="button" class="btn btn-ghost btn-tour" id="btn-tour" aria-label="Hướng dẫn từng tính năng">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#FFD45C" stroke="#3B2F4A" stroke-width="2"/><path d="M9.2 9.3a2.9 2.9 0 1 1 4 2.7c-.8.4-1.2.9-1.2 1.8v.5" fill="none" stroke="#3B2F4A" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.3" fill="#3B2F4A"/></svg>
+        <span>Hướng dẫn</span>
+      </button>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Khu vực chính">
+      <button type="button" role="tab" id="tab-btn-study" aria-controls="panel-study" aria-selected="true" aria-current="page">Học slide</button>
+      <button type="button" role="tab" id="tab-btn-notebook" aria-controls="panel-notebook" aria-selected="false" aria-current="false" tabindex="-1">Sổ tay <span class="nb-count" id="nb-count" hidden></span></button>
+      <button type="button" role="tab" id="tab-btn-arena" aria-controls="panel-arena" aria-selected="false" aria-current="false" tabindex="-1">Đấu trường</button>
+      <button type="button" role="tab" id="tab-btn-quiz" aria-controls="panel-quiz" aria-selected="false" aria-current="false" tabindex="-1">Kiểm tra cuối</button>
+    </nav>
+  </header>
+
+  <div id="docs-empty" class="docs-empty" hidden>
+    <div class="board-panel docs-empty-panel">
+      <h2 class="chalk-title">Chưa có tài liệu nào</h2>
+      <p>Chép một file <code>.pdf</code>, <code>.pptx</code>, <code>.md</code> hoặc <code>.txt</code> vào thư mục <code id="docs-empty-dir">data/slides/</code> rồi bấm Tải lại.</p>
+      <button type="button" class="btn btn-primary" id="reload-docs-btn">Tải lại</button>
+    </div>
+  </div>
+
+  <!-- ============ HỌC SLIDE ============ -->
+  <section id="panel-study" class="panel" role="tabpanel" aria-labelledby="tab-btn-study">
+    <div class="study-grid">
+      <div class="slide-col">
+        <div class="slide-toolbar">
+          <button type="button" class="btn btn-ghost" id="prev-slide">Trước</button>
+          <p class="slide-counter" id="slide-counter" aria-live="polite"></p>
+          <button type="button" class="btn btn-ghost" id="next-slide">Sau</button>
+        </div>
+        <div class="slide-progress" aria-hidden="true">
+          <div class="slide-progress-track"><div class="slide-progress-fill" id="slide-progress-fill"></div></div>
+          <span class="slide-progress-label" id="slide-progress-label"></span>
+        </div>
+        <div class="slide-view" id="slide-view">
+          <div class="pdf-wrap" id="pdf-wrap" hidden>
+            <canvas id="pdf-canvas"></canvas>
+            <div class="hl-layer" id="hl-layer"></div>
+          </div>
+          <div class="html-slide" id="html-slide" hidden></div>
+          <p class="slide-status" id="slide-status" role="status"></p>
+        </div>
+      </div>
+      <aside class="suggest-col" aria-label="Thẻ cho bot">
+        <div class="suggest-head">
+          <h2>Thẻ cho bot</h2>
+          <p class="suggest-sub" id="suggest-sub"></p>
+          <p class="sug-status" id="suggest-status" role="status" hidden></p>
+          <form class="slide-search" id="slide-search" role="search">
+            <label class="sr-only" for="slide-search-q">Tìm trong slide</label>
+            <input type="search" id="slide-search-q" placeholder="Tìm trong slide, vd: agent khác chatbot ở đâu" autocomplete="off">
+            <button type="submit" class="btn btn-small">Tìm</button>
+          </form>
+          <div class="search-results" id="slide-search-results" aria-live="polite" hidden></div>
+        </div>
+        <div class="suggest-list" id="suggest-list" aria-live="polite"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ SỔ TAY ============ -->
+  <section id="panel-notebook" class="panel" role="tabpanel" aria-labelledby="tab-btn-notebook" hidden>
+    <div class="nb-toolbar">
+      <h2>Sổ tay của bạn</h2>
+      <div class="nb-tools">
+        <input type="search" id="nb-search" placeholder="Tìm thẻ theo tiêu đề hoặc nội dung" aria-label="Tìm thẻ trong sổ tay">
+        <select id="nb-filter" aria-label="Lọc theo loại thẻ">
+          <option value="">Tất cả loại</option>
+          <option value="concept">Khái niệm</option>
+          <option value="rule">Quy tắc</option>
+          <option value="example">Ví dụ</option>
+          <option value="mistake">Lỗi thường gặp</option>
+        </select>
+        <button type="button" class="btn btn-primary" id="nb-new">Viết thẻ mới</button>
+      </div>
+    </div>
+    <p class="nb-hint" id="nb-hint"></p>
+    <div class="nb-grid" id="nb-grid"></div>
+    <div class="nb-empty" id="nb-empty" hidden>
+      <p>Sổ tay đang trống. Vào tab <b>Học slide</b>, chọn một slide có gợi ý và bấm <b>Thêm vào sổ tay</b> — hoặc viết thẻ mới của riêng bạn.</p>
+      <button type="button" class="btn btn-ghost" id="nb-go-study">Đi học slide</button>
+    </div>
+  </section>
+
+  <!-- ============ ĐẤU TRƯỜNG ============ -->
+  <section id="panel-arena" class="panel" role="tabpanel" aria-labelledby="tab-btn-arena" hidden>
+    <!-- Landing -->
+    <div id="arena-landing" class="arena-landing">
+      <div class="board-panel landing-panel">
+        <h2 class="chalk-title">Đấu trường</h2>
+        <p class="tagline">Chọn tối đa 5 thẻ trong sổ tay rồi đấu 1 đấu 1 với một trong bốn bạn: Minh, Vy, Hải, An. Cô Linh ra đề và chấm.</p>
+        <div class="landing-mates" id="landing-mates"></div>
+        <button type="button" class="btn btn-primary" id="btn-prepare">Chuẩn bị trận</button>
+        <div id="landing-resume" hidden>
+          <p>Đang có một trận chưa chơi xong.</p>
+          <button type="button" class="btn btn-ghost" id="btn-resume-match">Vào lại trận</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chuẩn bị trận -->
+    <div id="prepare-view" class="prepare-view" hidden>
+      <div class="prepare-grid">
+        <div class="prepare-main board-panel">
+          <h2>Chuẩn bị trận</h2>
+          <div class="topic-block" id="topic-block" hidden>
+            <p class="field-label">Chủ đề trận này</p>
+            <p class="topic-title" id="topic-title"></p>
+            <p class="topic-slides" id="topic-slides"></p>
+          </div>
+          <label class="field">
+            <span class="field-label">Tên bot của bạn</span>
+            <input id="bot-name-input" type="text" maxlength="24" value="Bé Bot">
+          </label>
+          <fieldset class="opp-picker">
+            <legend>Chọn đối thủ cho trận 1 đấu 1</legend>
+            <div class="opp-pick-list" id="opp-pick-list"></div>
+          </fieldset>
+          <fieldset class="card-picker">
+            <legend>Chọn thẻ mang vào trận <span class="pick-counter" id="pick-counter">0/5</span></legend>
+            <div class="pick-list" id="pick-list"></div>
+          </fieldset>
+          <div class="prepare-actions">
+            <button type="button" class="btn btn-primary" id="btn-start-match" disabled>Bắt đầu trận</button>
+            <button type="button" class="btn btn-ghost" id="btn-new-topic">Đổi chủ đề</button>
+          </div>
+          <p class="sug-status" id="prepare-status" role="status" hidden></p>
+        </div>
+        <aside class="opponents board-panel" aria-labelledby="opp-deck-title">
+          <h3 id="opp-deck-title">Bộ thẻ của đối thủ</h3>
+          <p class="calm-note" id="opp-deck-note"></p>
+          <ul class="opp-deck" id="opp-deck"></ul>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Trận đấu -->
+    <div id="arena-view" class="arena-view" hidden>
+      <div class="game-grid">
+        <div class="stage" id="stage">
+          <canvas id="scene-canvas" aria-label="Cảnh lớp học 3D"></canvas>
+          <p id="scene-fallback" class="scene-fallback" hidden>Không tải được cảnh 3D — bạn vẫn theo dõi được trận ở bảng bên dưới.</p>
+          <div class="board-overlay" id="board-overlay">
+            <p id="round-chip" class="round-chip"></p>
+            <div id="board-content" class="board-content chalk-text" aria-live="polite"></div>
+          </div>
+          <div id="speech-bubble" class="speech-bubble" hidden></div>
+        </div>
+        <aside class="rail">
+          <div class="scoreboard-wrap">
+            <h2 class="rail-title">Sổ điểm</h2>
+            <ol id="scoreboard" class="scoreboard"></ol>
+          </div>
+          <div class="feed-wrap">
+            <h2 class="rail-title">Lời thoại</h2>
+            <div id="feed" class="feed" aria-live="polite"></div>
+          </div>
+        </aside>
+        <div class="dock" id="dock">
+          <p class="waiting-note" id="controls-status" role="status" hidden></p>
+          <div id="controls" class="controls"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Xem lại trận -->
+    <div id="review-view" class="review-view" hidden>
+      <div class="game-grid">
+        <div class="stage" id="stage-review">
+          <p class="scene-fallback" hidden>Không tải được cảnh 3D — bạn vẫn xem được kết quả ở bên phải.</p>
+        </div>
+        <aside class="rail review-rail">
+          <div class="scoreboard-wrap">
+            <h2 class="rail-title">Kết quả trận</h2>
+            <p class="result-banner" id="result-banner" hidden></p>
+            <p class="calm-note" id="result-note"></p>
+            <ol id="ranking-list" class="scoreboard ranking-list"></ol>
+          </div>
+          <div class="review-scroll">
+            <h2 class="rail-title">Xem lại câu hỏi</h2>
+            <div id="review-questions"></div>
+            <h2 class="rail-title">Kiến thức bot còn thiếu</h2>
+            <div id="review-gaps"></div>
+            <button type="button" class="btn btn-primary" id="btn-rematch">Đấu lại với câu mới</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KIỂM TRA CUỐI ============ -->
+  <section id="panel-quiz" class="panel" role="tabpanel" aria-labelledby="tab-btn-quiz" hidden>
+    <div class="quiz-wrap" id="quiz-root"></div>
+  </section>
+</main>
+
+<div id="toast-root" class="toast-root" aria-live="assertive"></div>
+<div id="modal-root"></div>
+<script type="module" src="/static/app.js"></script>
+</body>
+</html>
