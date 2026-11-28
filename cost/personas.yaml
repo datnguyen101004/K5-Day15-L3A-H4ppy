@@ -16,23 +16,23 @@ users:              # số người dùng thật nếu đưa vào dùng — 3 k�
 
 personas:           # ≥3 kiểu người dùng; share cộng lại = 1
                     # Chia theo câu 3 khảo sát (số bài pre-class / tuần), n = 20 phiếu hợp lệ, evidence/survey/results.csv
-                    # uses_per_month = trung vị số bài / tuần của nhóm × 4 tuần / tháng (tự ước tính), 1 phiên / bài (tự ước tính)
+                    # uses_per_month = trung bình số bài / tuần của nhóm × 4 tuần / tháng, làm tròn — khớp spec.md §2 (quy đổi tự ước tính), 1 phiên / bài (tự ước tính)
                     # turns_per_session = trung vị câu 5 (số lượt trả lời bạn học AI) của nhóm, trần 3 lượt (canvas dòng 6: hỏi vặn ≤ 2 rồi chốt)
   - name: hoc_it
     share: 0.25             # 5/20 phiếu xem 0–1 bài / tuần
-    uses_per_month: 4       # trung vị 1 bài / tuần × 4
+    uses_per_month: 2       # trung bình 0,6 bài / tuần × 4 ≈ 2
     turns_per_session: 1    # trung vị câu 5 của nhóm = 1 lượt
-    source: "khảo sát C3: 5/20 phiếu 0–1 bài/tuần (trung vị 1) · C5 trung vị 1 lượt · ×4 tuần và 1 phiên/bài (tự ước tính)"
+    source: "khảo sát C3: 5/20 phiếu 0–1 bài/tuần (trung bình 0,6) · C5 trung vị 1 lượt · ×4 tuần và 1 phiên/bài (tự ước tính)"
   - name: hoc_vua
     share: 0.60             # 12/20 phiếu xem 2–3 bài / tuần
-    uses_per_month: 8       # trung vị 2 bài / tuần × 4
+    uses_per_month: 10      # trung bình 2,4 bài / tuần × 4 ≈ 10
     turns_per_session: 1    # trung vị câu 5 của nhóm = 1 lượt
-    source: "khảo sát C3: 12/20 phiếu 2–3 bài/tuần (trung vị 2) · C5 trung vị 1 lượt · ×4 tuần và 1 phiên/bài (tự ước tính)"
+    source: "khảo sát C3: 12/20 phiếu 2–3 bài/tuần (trung bình 2,4) · C5 trung vị 1 lượt · ×4 tuần và 1 phiên/bài (tự ước tính)"
   - name: hoc_nhieu
     share: 0.15             # 3/20 phiếu xem ≥4 bài / tuần
-    uses_per_month: 24      # trung vị 6 bài / tuần × 4
+    uses_per_month: 23      # trung bình 5,7 bài / tuần × 4 ≈ 23
     turns_per_session: 3    # trung vị câu 5 của nhóm = "2–3" → lấy 3 = trần canvas dòng 6
-    source: "khảo sát C3: 3/20 phiếu ≥4 bài/tuần (trung vị 6) · C5 trung vị “2–3”, lấy 3 (trần canvas dòng 6) · ×4 tuần và 1 phiên/bài (tự ước tính)"
+    source: "khảo sát C3: 3/20 phiếu ≥4 bài/tuần (trung bình 5,7) · C5 trung vị “2–3”, lấy 3 (trần canvas dòng 6) · ×4 tuần và 1 phiên/bài (tự ước tính)"
 # Mỗi lượt hỏi lấy ngẫu nhiên một đầu vào trong eval/benchmark.csv (type thuong và kho).
 # Persona hỏi kiểu riêng: thêm vào persona đó
 #     types: [thuong, kho, tu_choi]
