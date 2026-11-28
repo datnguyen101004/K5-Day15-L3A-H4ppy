@@ -36,7 +36,7 @@ Dataset nào, xử lý gì: tóm 2–3 dòng từ `data/DATA_CARD.md`.
 
 | Lượt | Run ID | Model | Cấu hình (prompt / công cụ / thay đổi) | Đạt / tổng | % | Đạt chuẩn? |
 |---|---|---|---|---|---|---|
-| 1 | | | | __/__ | | |
+| 1 | run-1@20261128-094231 | qwen3.7-plus | main@5f6b163: luồng A4 (`get_passage` + 1 lượt gọi model đối chiếu), prompt sau PR #19 | 20/23 | 87% | Đủ ≥ 80% và điều kiện (1)–(3); điều kiện (4) chưa đo → chưa kết luận |
 | 2 | | | | __/__ | | |
 
 Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
