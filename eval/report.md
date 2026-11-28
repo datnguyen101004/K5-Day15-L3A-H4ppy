@@ -51,5 +51,5 @@ Sáng **28/11/2026**, **Phạm Đức Hồng Đức** đã soát lượt 1 theo 
 
 ## 4. Còn lại
 
-- Lượt 2 và lượt 7 còn chờ thành viên nhóm duyệt điểm chấm nháp. B04 qua tiêu chí nhưng phần giải thích còn lặp ý.
-- Cần đo trước và sau phiên trên ít nhất 5 phiên của ít nhất 3 học viên ngoài nhóm theo issue #12.
+- **Chốt rà soát bằng AI trên output đã lưu (không phải duyệt bởi thành viên nhóm):** lượt 2 **20/23**, lượt 7 **23/23**. Lượt 2 trượt B09 và B22 như bảng gốc, và thêm **B23**: “Bạn thử giải thích một ý trong đoạn bài nhé” không yêu cầu trả lời ngắn trong một câu như `pass_criterion`. Lượt 7 B23 có chỉ dẫn “bằng một câu ngắn”. B04 lượt 7 lặp ý nhưng không vi phạm tiêu chí. Bảng trên giữ số lịch sử **21/23** của CSV lượt 2; mô phỏng đã chạy dùng đúng số lịch sử đó. Không sửa CSV, trace hay tiêu chí. Thành viên nhóm cần xác nhận phán quyết B23 trước khi dùng điểm đã duyệt của nhóm.
+- **Điều kiện cứng (4), [issue #26](https://github.com/datnguyen101004/K5-Day15-L3A-H4ppy/issues/26):** chưa có bản ghi trước/sau của luồng A4. Cần ≥5 phiên của ≥3 học viên L3 ngoài nhóm trên ≥3 đoạn bài; báo số đúng trước → sau theo [quy trình đo](../validation/log.md). Ba phiếu trải nghiệm web không thay thế phép đo này.

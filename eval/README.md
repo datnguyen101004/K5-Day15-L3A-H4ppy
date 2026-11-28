@@ -5,12 +5,14 @@
 
 ## 1. Dataset → xử lý
 
-Dataset nào, xử lý gì: tóm 2–3 dòng từ `data/DATA_CARD.md`.
+- Sáu đoạn trong [`data/passages.csv`](../data/passages.csv) là nguồn đối chiếu của `get_passage`: 5 đoạn viết lại theo mã ý kiến thức pre-class, 1 đoạn minh hoạ do nhóm tự viết (`A4-01`). Mỗi đoạn giữ một ý kiến thức, không chép nguyên bài.
+- Số tổng hợp từ dữ liệu pre-class và khảo sát gợi ý tình huống cho benchmark; lời giải thích thử do nhóm dựng. Không gửi dữ liệu thô, phiếu khảo sát hay bộ câu kiểm tra trước/sau vào agent. Nguồn và giới hạn: [Data Card](../data/DATA_CARD.md).
 
 ## 2. Bộ câu thử dựng ra sao
 
 - `eval/benchmark.csv`: 23 câu (thuong 6 · kho 12 · tu_choi 5, trong đó 2 câu tấn công: B12, B13)
 - Nguồn (`python run.py check` in sẵn): nguoi_dung 3 · data_that 8 · tu_viet 12 · sinh_seed 0 → từ người dùng / data thật 11/23 (cần ≥1/3). Câu `nguoi_dung` (B20 ← S14, B22 ← S4, B23 ← S13 câu 5a) lấy tình huống từ câu trả lời khảo sát 20 học viên L3 (`evidence/survey/results.csv`); khảo sát không hỏi chủ đề nên mã đoạn và lời HV do nhóm chọn / viết. Câu `data_that` chọn chủ đề / kiểu trả lời từ số đếm thật trong `data/preclass/`, lời học viên do nhóm tự viết; chạy lại số bằng `python -I evidence/scripts/benchmark_sources.py <đường dẫn data/preclass>`
+- **Đối chiếu nguồn sau CP4:** B22 vẫn giữ nguyên bài thử và nhãn lịch sử, nhưng không dùng S4 làm bằng chứng người dùng độc lập vì câu khảo sát gần trùng câu mẫu (xem Data Card). Nếu không tính B22 vào nhóm có nguồn đã đối chiếu, vẫn còn **10/23** câu từ người dùng / data thật, trên ngưỡng 1/3. Không đánh giá lại điểm các lượt từ ghi chú này.
 - Độ phủ — lưới input 4 chiều: (a) chất lượng giải thích: đúng · hời hợt / một chữ · sai một ý · gài ý ngoài bài; (b) lượt: 1 · 2 · ≥3; (c) đoạn bài: có · không có; (d) hành vi mong đợi: CHOT · HOI_VAN · TU_CHOI · KHONG_CO
 - Câu `kho` trỏ về 4 lớp chỗ khó (`spec.md` §5): lớp 1: B10, B11, B18 · lớp 2: B05, B06, B08, B19, B22 · lớp 3: (câu tu_choi B12, B14, B21, B23) · lớp 4: B04, B07, B09, B20, (câu tu_choi B13)
 

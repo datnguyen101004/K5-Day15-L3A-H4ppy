@@ -11,10 +11,10 @@
 
 | STT | Họ và tên | Mã học viên | Vai trò | Phần việc chính |
 |---|---|---|---|---|
-| 1 | Phạm Nguyễn Tất Đạt | 2A202603401 | Đội trưởng | AI |
-| 2 | Nguyễn Ngọc Toàn | 2A202603405 | Thành viên | AI |
-| 3 | Phạm Đức Hồng Đức | 2A202603558 | Thành viên | AI |
-| 4 | Ngô Gia Bảo | 2A202603482 | Thành viên | AI |
+| 1 | Phạm Nguyễn Tất Đạt | 2A202603401 | Đội trưởng | Bằng chứng, khảo sát và demo |
+| 2 | Nguyễn Ngọc Toàn | 2A202603405 | Thành viên | Data card và thiết kế giải pháp |
+| 3 | Phạm Đức Hồng Đức | 2A202603558 | Thành viên | Luồng A4, tích hợp model và eval |
+| 4 | Ngô Gia Bảo | 2A202603482 | Thành viên | Benchmark, metric và quy trình đo |
 
 **Quy tắc điền**
 - **Lớp:** `L3A` hoặc `L3B`. **Track:** một chữ `A` (EdTech), `B` (Y tế), `C` (Du lịch), `D` (Thương mại điện tử), `E` (Tài chính) hoặc `F` (Làn khác). **Link repo:** link GitHub công khai của nhóm.

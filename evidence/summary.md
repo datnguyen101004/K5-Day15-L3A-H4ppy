@@ -20,16 +20,18 @@
   - C5, trả lời bạn học AI ≤1 lượt: 12/20 (60%); 0 lượt: 5/20 (25%).
   - C6, xem xong không làm gì để tự kiểm: 5/20 (25%). Làm quiz cuối đoạn: 11/20 (55%); tự tóm tắt hoặc giải thích lại: 8/20 (40%).
   - C4, cách xem: bỏ qua đoạn 8/20 (40%); tua nhanh ≥1.5x 7/20 (35%); vừa xem vừa làm việc khác 6/20 (30%).
-  - C7, giải thích lại khái niệm chính mà không xem lại: 0/20 giải thích được, nhưng 18/20 bỏ trống (câu tuỳ chọn). **Không dùng câu này làm bằng chứng** vì bỏ trống không có nghĩa là không giải thích được.
+  - C7, giải thích lại khái niệm chính mà không xem lại: 18/20 bỏ trống, 2 phiếu còn lại nói không nhớ. **Không dùng câu này để kết luận tỉ lệ học viên không hiểu bài.**
   - C3, số bài pre-class mỗi tuần: trung vị 2, dùng cho số lần/tháng ở `spec.md` §2.
 
 ## 3. ≥5 trích dẫn hoặc ví dụ nguyên văn (có nguồn, bỏ tên)
 
-1. "xem phần đầu thì thấy dễ hiểu nhưng lúc làm câu hỏi giữa thì chọn bừa vì không chắc, lên lớp làm lab mới biết mình hiểu sai" — phiếu S4, câu 10
+1. "Một vài câu hỏi quiz cuối đoạn chưa bám sát phần thực hành trên lớp nên vẫn phải hỏi thêm TA." — phiếu S17, câu 10
 2. "Khi xem không có ví dụ thực tế đi kèm ngay nên lúc vào buổi thực hành bị quên, phải mở lại video tìm đúng đoạn cần xem." — phiếu S14, câu 10
 3. "Muốn xem nhanh cho kịp tiến độ trước buổi học nên bỏ qua phần chat." — phiếu S13, câu 5a
 4. "Thấy tự đọc slide nhanh hơn và không quen chat với AI trong lúc xem video." — phiếu S16, câu 5a
 5. "Bận deadline nên chỉ lướt qua nội dung chính, không kịp dừng lại tương tác." — phiếu S18, câu 5a
+
+Đã đối chiếu cả 5 câu với bản xuất form lưu riêng; không công bố bản gốc. Không dùng câu 10 phiếu S4 dù có trong bản xuất, vì nội dung gần trùng câu mẫu hư cấu trong lúc soạn khảo sát (xem [Data Card](../data/DATA_CARD.md)).
 
 ## 4. Các nguồn có khớp nhau không
 

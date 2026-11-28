@@ -62,7 +62,7 @@
 | Số dòng / số đoạn | 21 phiếu · 20 hợp lệ (13 L3A, 7 L3B) · bỏ 1 phiếu lab coach |
 | Phiên bản / ngày lấy | 27/11/2026 |
 | Nhãn | Thật (tự khai, ẩn danh) |
-| Giới hạn | Mẫu nhỏ, tự chọn (người trong group Zalo, thời gian mở 22 phút) → lệch về người hay tương tác · tự khai, nhớ lại "lần gần nhất" · **cần đối chiếu với bản gốc `raw-*`**: câu 10 của phiếu S4 trùng gần nguyên văn với một câu *mẫu hư cấu* do trợ lý AI viết khi nhóm soạn khảo sát — chưa xác nhận đây là câu trả lời thật thì chưa dùng làm trích dẫn |
+| Giới hạn | Mẫu nhỏ, tự chọn, tự báo cáo; khảo sát mở 22 phút qua group Zalo. Câu 10 của S4 có trong bản xuất form nhưng gần trùng một câu mẫu hư cấu khi soạn khảo sát, nên không dùng làm trích dẫn pain và không xem là nguồn độc lập đã xác minh cho B22. Giữ nguyên dữ liệu gốc và các lượt eval đã chạy. |
 
 
 ## Dataset 4 · Bộ slide tự học về AI agent (`data/slides/ai-agent.pdf`)
@@ -76,3 +76,11 @@
 | Phiên bản / ngày lấy | v1 · 28/11/2026 |
 | Nhãn | `synthetic` (nhóm tự viết) |
 | Giới hạn | Chưa được giảng viên soát nội dung · viết gọn kiểu slide, không phải bài giảng thật của lớp → chất lượng gợi ý / câu hỏi đo trên bộ này chưa chắc giữ nguyên với slide BTC |
+
+## Dataset 5 · Feedback dùng thử Lớp học tranh tài
+
+| | |
+|---|---|
+| Nguồn | Form trải nghiệm web, 3 phiếu tự báo ngày 28/11/2026; [bản lưu hồ sơ](../validation/khao-sat-lop-hoc-tranh-tai.csv) có cùng nội dung với bản đối chiếu trong `data/`, không tính hai lần |
+| Dùng để làm gì | Chọn lỗi cần sửa và theo dõi thay đổi ở [nhật ký dùng thử](../validation/log.md); không đưa vào ứng dụng hoặc gửi vào model |
+| Giới hạn | Mẫu nhỏ, chưa xác nhận người thử đều ngoài nhóm; không có câu trả lời kiểm tra trước/sau của luồng A4, không dùng để tính `tra_loi_dung_sau_phien` |

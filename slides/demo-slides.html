@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>H4ppy · Dạy lại bạn học AI · demo CP4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!--
+  Trình chiếu 5 trang (thuyết trình 5 phút): mở file này trong trình duyệt, chuyển bằng nút hoặc phím ← →.
+  Xuất PDF: in trang (Ctrl+P), bật in nền — mỗi slide một trang 16:9.
+-->
+<style>
+  @page { size: 1920px 1080px; margin: 0; }
+  :root {
+    --board: #23453A;
+    --board-deep: #1B372E;
+    --chalk: #F5F7F0;
+    --chalk-dim: #DDE6DE;
+    --ink: #2A2238;
+    --muted: #5E5670;
+    --sakura: #F78FB0;
+    --marker: #FFD45C;
+    --paper: #FBFAF6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: "Be Vietnam Pro", system-ui, sans-serif; color: var(--ink); margin: 0; }
+
+  .slide {
+    width: 1920px; height: 1080px; position: relative; overflow: hidden;
+    background: var(--paper);
+    display: grid; grid-template-columns: minmax(0, 1fr) 760px; gap: 72px;
+    padding: 96px 112px 124px;
+    break-after: page;
+  }
+  .slide:last-child { break-after: auto; }
+
+  /* Tiêu đề = một câu khẳng định */
+  h1 {
+    font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 76px; line-height: 1.04;
+    margin: 0 0 36px; letter-spacing: -0.5px;
+  }
+  .lede { font-size: 34px; line-height: 1.45; margin: 0 0 30px; }
+  .lede b { font-weight: 700; }
+  ul.points { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+  ul.points li { font-size: 30px; line-height: 1.4; padding-left: 34px; position: relative; }
+  ul.points li::before {
+    content: ""; position: absolute; left: 0; top: 0.55em; width: 14px; height: 14px; border-radius: 50%;
+    background: var(--sakura);
+  }
+  .quote {
+    font-size: 29px; line-height: 1.45; margin: 34px 0 0; padding-left: 26px;
+    border-left: 8px solid var(--sakura);
+  }
+  .quote cite { display: block; font-style: normal; font-size: 22px; color: var(--muted); margin-top: 8px; }
+  code { font-family: inherit; font-weight: 600; }
+
+  /* Bảng đen: nơi đặt bằng chứng chính */
+  .board {
+    background: var(--board); color: var(--chalk); border-radius: 28px;
+    padding: 56px; display: flex; flex-direction: column; justify-content: center; gap: 28px;
+    box-shadow: inset 0 0 0 10px var(--board-deep);
+  }
+  .board p { margin: 0; }
+  .hero { font-family: "Baloo 2", sans-serif; font-weight: 800; line-height: 0.9; font-size: 210px; }
+  .hero .mark { color: var(--marker); }
+  .hero-cap { font-size: 30px; line-height: 1.35; }
+  .stat { font-size: 27px; line-height: 1.42; color: var(--chalk-dim); border-top: 2px solid rgba(245,247,240,0.18); padding-top: 22px; }
+  .stat b { color: var(--chalk); font-family: "Baloo 2", sans-serif; font-size: 38px; font-weight: 800; margin-right: 10px; }
+
+  .src {
+    position: absolute; left: 112px; right: 112px; bottom: 44px;
+    font-size: 19px; color: var(--muted); display: flex; justify-content: space-between; gap: 40px;
+  }
+  .src span:last-child { white-space: nowrap; }
+
+  /* Các bước có thứ tự thật (luồng phiên, ưu tiên tuần tới) mới đánh số */
+  .flow { display: grid; gap: 22px; }
+  .step { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 22px; align-items: start; font-size: 29px; line-height: 1.38; }
+  .step .n {
+    font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 30px; width: 56px; height: 56px;
+    border-radius: 50%; background: var(--sakura); color: var(--ink); display: grid; place-items: center;
+  }
+  .demo-line { font-size: 27px; line-height: 1.4; }
+  .demo-line .who { font-family: "Baloo 2", sans-serif; font-weight: 700; color: var(--sakura); }
+  .demo-line .tag {
+    font-family: "Baloo 2", sans-serif; font-weight: 800; color: var(--board); background: var(--marker);
+    border-radius: 10px; padding: 2px 12px; margin-right: 10px;
+  }
+
+  table.res { border-collapse: collapse; font-size: 28px; width: 100%; }
+  table.res th, table.res td { text-align: left; padding: 16px 24px 16px 0; border-bottom: 2px solid #E5E1EC; vertical-align: top; }
+  table.res th { font-size: 22px; color: var(--muted); font-weight: 600; }
+  table.res td:nth-child(2), table.res td:nth-child(3) { white-space: nowrap; }
+  table.res td.ok { font-weight: 700; }
+  .pending { color: var(--muted); font-style: italic; }
+
+  .cost-row { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .cost { border-top: 2px solid rgba(245,247,240,0.18); padding-top: 20px; }
+  .cost .v { font-family: "Baloo 2", sans-serif; font-size: 60px; font-weight: 800; line-height: 1; }
+  .cost .l { font-size: 23px; margin-top: 8px !important; color: var(--chalk-dim); line-height: 1.35; }
+  .verdict { margin-top: 40px; font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 46px; line-height: 1.15; }
+  .verdict .mark { background: var(--marker); padding: 0 12px; border-radius: 10px; }
+
+
+  /* ---------- Trình chiếu: slide 1920×1080 thu phóng vừa cửa sổ, không thanh cuộn ---------- */
+  html, body { height: 100%; }
+  body { background: #17141F; overflow: hidden; }
+  .deck { position: fixed; inset: 0 0 76px 0; overflow: hidden; counter-reset: slide; }
+  .slide { counter-increment: slide; }
+  .deck .slide {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%) scale(var(--s, 1));
+    visibility: hidden; opacity: 0; border-radius: 8px; box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+    transition: opacity 220ms cubic-bezier(0.23, 1, 0.32, 1), visibility 0s linear 220ms;
+  }
+  .deck .slide.on { visibility: visible; opacity: 1; transition: opacity 220ms cubic-bezier(0.23, 1, 0.32, 1); }
+  .src::after { content: counter(slide) " / " var(--total, "5"); white-space: nowrap; }
+
+  .nav {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 76px;
+    display: flex; align-items: center; justify-content: center; gap: 18px;
+    color: var(--chalk); font-family: "Be Vietnam Pro", sans-serif;
+  }
+  .nav button {
+    font: 700 17px "Be Vietnam Pro", sans-serif; color: var(--ink); background: var(--chalk);
+    border: 0; border-radius: 999px; padding: 10px 22px; cursor: pointer; min-width: 96px;
+  }
+  .nav button:disabled { opacity: 0.35; cursor: default; }
+  .nav button:focus-visible { outline: 3px solid var(--sakura); outline-offset: 3px; }
+  @media (hover: hover) and (pointer: fine) { .nav button:not(:disabled):hover { background: var(--sakura); } }
+  .nav .count { font-weight: 600; font-variant-numeric: tabular-nums; min-width: 64px; text-align: center; }
+  .nav .hint { position: absolute; right: 24px; font-size: 14px; color: #9C96AD; }
+  @media (max-width: 600px) { .nav .hint { display: none; } }
+
+  @media (prefers-reduced-motion: reduce) { .deck .slide, .deck .slide.on { transition: none; } }
+  @media print {
+    html, body { height: auto; }
+    body { background: none; overflow: visible; print-color-adjust: exact; }
+    .deck { position: static; inset: auto; overflow: visible; }
+    .deck .slide { position: relative; left: auto; top: auto; transform: none; visibility: visible; opacity: 1;
+      box-shadow: none; border-radius: 0; transition: none; break-after: page; }
+    .deck .slide:last-child { break-after: auto; }
+    .nav { display: none; }
+  }
+
+  /* Trang 1: giới thiệu app + thành viên */
+  .intro-title { font-family: "Baloo 2", system-ui, sans-serif; font-weight: 800; font-size: 118px; line-height: 0.98; margin: 0 0 28px; letter-spacing: -1px; }
+  .intro-meta { font-size: 28px; color: var(--muted); margin: 0 0 40px; }
+  .app-line { font-size: 27px; line-height: 1.45; margin: 36px 0 0; padding-left: 26px; border-left: 8px solid var(--sakura); }
+  .app-line a { color: var(--ink); font-weight: 700; }
+  ul.members { list-style: none; margin: 0; padding: 0; display: grid; gap: 26px; }
+  ul.members li { display: grid; gap: 4px; border-top: 2px solid rgba(245, 247, 240, 0.18); padding-top: 20px; }
+  ul.members li:first-child { border-top: 0; padding-top: 0; }
+  ul.members b { font-family: "Baloo 2", sans-serif; font-size: 38px; font-weight: 800; line-height: 1.1; }
+  ul.members b .lead { color: var(--marker); }
+  ul.members span { font-size: 24px; color: var(--chalk-dim); line-height: 1.35; }
+</style>
+</head>
+<body>
+<main class="deck">
+
+<!-- 0 · Giới thiệu app + thành viên (~30s) -->
+<section class="slide">
+  <div>
+    <p class="intro-meta">Nhóm H4ppy · L3A · Track A4: lớp học kiểu mới</p>
+    <p class="intro-title">Dạy lại bạn học AI</p>
+    <p class="lede">Xem xong một đoạn video pre-class, học viên giải thích lại cho <b>một bạn học AI đang hiểu nhầm</b>. AI đối chiếu với đoạn bài gốc để hỏi vặn đúng chỗ còn thiếu, hoặc chốt và sửa kèm mã đoạn.</p>
+    <p class="app-line"><b>Lớp học tranh tài:</b> tự viết thẻ rồi cho bot đấu 1:1. Cả 3 phiếu dùng thử đều muốn dùng web để ôn.<br><a href="https://main.d1rt2vnqu05aoi.amplifyapp.com">Mở bản web</a></p>
+  </div>
+  <div class="board">
+    <p class="hero-cap">Thành viên</p>
+    <ul class="members">
+      <li><b>Phạm Nguyễn Tất Đạt <span class="lead">· đội trưởng</span></b><span>Bằng chứng pain: đào data pre-class + khảo sát học viên</span></li>
+      <li><b>Ngô Gia Bảo</b><span>Bộ câu thử, metric và chuẩn “đạt”</span></li>
+      <li><b>Phạm Đức Hồng Đức</b><span>Luồng agent, công cụ get_passage, nối model thật</span></li>
+      <li><b>Nguyễn Ngọc Toàn</b><span>Data card và thiết kế giải pháp (spec §4)</span></li>
+    </ul>
+  </div>
+  <p class="src"><span>Phân công: spec.md §10 · Phản hồi tự báo: validation/log.md (n = 3)</span></p>
+</section>
+
+<!-- 1 · Người dùng &amp; pain (~55s) -->
+<section class="slide">
+  <div>
+    <h1>Xem xong video tưởng đã hiểu, lên lab mới biết mình hiểu sai</h1>
+    <p class="lede">Học viên L3 tự học video pre-class nhưng <b>không tự kiểm được</b> mình đã nắm bản chất chưa.</p>
+    <ul class="points">
+      <li>354/431 (82,1%) học viên mở video nhưng không nộp câu ôn nào</li>
+      <li>2.099/2.153 (97,5%) câu hỏi xen giữa video bị bấm bỏ qua</li>
+    </ul>
+    <p class="quote">“Khi xem không có ví dụ thực tế đi kèm ngay nên lúc vào buổi thực hành bị quên, phải mở lại video tìm đúng đoạn cần xem.”<cite>Phiếu khảo sát S14, câu 10</cite></p>
+  </div>
+  <div class="board">
+    <p class="hero"><span class="mark">14</span>/20</p>
+    <p class="hero-cap">học viên phải hỏi lại hoặc mở lại video ở buổi thực hành, mỗi lần mất khoảng 9 phút</p>
+    <p class="stat"><b>≈ 680 giờ/tháng</b> thời gian hỏi và xem lại ước tính (302 người × 15 lần × 9 phút). Trợ giảng hỏi đáp có sẵn chưa giúp người tưởng mình đã hiểu.</p>
+  </div>
+  <p class="src"><span>Nguồn: data/preclass 05–25/11 (evidence/count.py) · khảo sát n = 20 học viên L3 (C8, C9) · spec.md §2</span></p>
+</section>
+
+<!-- 2 · Giải pháp + demo (~90s) -->
+<section class="slide">
+  <div>
+    <h1>Học viên dạy lại cho một bạn học AI đang hiểu nhầm</h1>
+    <div class="flow">
+      <div class="step"><span class="n">1</span><span>Xem xong một đoạn, mở phiên: bạn học AI cố ý hiểu nhầm đúng <b>một</b> ý cốt lõi</span></div>
+      <div class="step"><span class="n">2</span><span>Học viên giải thích bằng lời của mình; AI lấy <b>đoạn bài gốc</b> để đối chiếu, không dựa vào hiểu biết riêng của model</span></div>
+      <div class="step"><span class="n">3</span><span>Thiếu hoặc sai thì <b>hỏi vặn</b> đúng chỗ đó, tối đa 2 lượt; đúng thì <b>chốt</b>; vẫn sai thì <b>sửa đúng</b> kèm mã đoạn để mở lại</span></div>
+    </div>
+    <p class="quote">Một workflow cố định, một quyết định của AI, một công cụ chỉ đọc <code>get_passage</code>: rẻ và đo được.</p>
+  </div>
+  <div class="board">
+    <p class="hero-cap">Hai ca demo độc lập: B05 (khó) và B01 (thường)</p>
+    <p class="demo-line"><span class="who">Bạn học AI:</span> Vậy là model tự nhớ cả cuộc trò chuyện với mình nhỉ?</p>
+    <p class="demo-line"><span class="who">Học viên:</span> ừ đúng rồi</p>
+    <p class="demo-line"><span class="tag">HỎI VẶN</span>Bạn có thể giải thích rõ hơn về vai trò của ứng dụng và mô hình trong việc xử lý lịch sử hội thoại không?</p>
+    <p class="demo-line"><span class="who">Học viên:</span> Không phải đâu. Model chỉ nhận chữ vào rồi trả chữ ra, không tự nhớ gì giữa các lượt…</p>
+    <p class="demo-line"><span class="tag">CHỐT</span>Ý mình nêu trước đó là một hiểu nhầm: «model tự nhớ cả cuộc trò chuyện». Nguồn: doan=chatbot_is_app_around_model</p>
+  </div>
+  <p class="src"><span>Trích hội thoại B05, B01 · eval/benchmark.csv · eval/run-1.csv · spec.md §4</span></p>
+</section>
+
+<!-- 3 · Đánh giá (~65s) -->
+<section class="slide">
+  <div>
+    <h1>Lượt 2 qua 21/23; chưa kết luận đạt</h1>
+    <table class="res">
+      <thead><tr><th>Chuẩn chốt từ CP2</th><th>Lượt 1</th><th>Lượt 2*</th></tr></thead>
+      <tbody>
+        <tr><td>≥ 80% câu thử qua</td><td class="ok">20/23</td><td class="ok">21/23</td></tr>
+        <tr><td>Từ chối đúng 100%</td><td>5/5</td><td>5/5</td></tr>
+        <tr><td>Không xác nhận ý sai 100%</td><td>7/7</td><td>7/7</td></tr>
+        <tr><td>Tối đa 2 lượt hỏi vặn 100%</td><td>2/2</td><td>2/2</td></tr>
+        <tr><td>≥ 80% đúng sau phiên thật</td><td class="pending">Chưa đo</td><td class="pending">Chưa đo</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="board">
+    <p class="hero"><span class="mark">23</span>/23</p>
+    <p class="hero-cap">Lượt 7 chấm nháp. Bộ thử: 6 thường, 12 khó, 5 từ chối.</p>
+    <p class="stat"><b>B19:</b> từ lượt 2, AI không còn khen học viên đã hiểu khi họ chỉ đoán. B09 và B22 qua ở lượt 7 theo chấm nháp.</p>
+  </div>
+  <p class="src"><span>* Chấm nháp · run-1@20261128-094231 → run-2@20261128-115432 · run-7@20261128-121425 · eval/report.md</span></p>
+</section>
+
+<!-- 4 · Chi phí &amp; kết luận (~60s) -->
+<section class="slide">
+  <div>
+    <h1>Chi phí thấp, cần đo học thật</h1>
+    <p class="lede">Ước tính <b>680 giờ/tháng</b> đang mất vì hỏi hoặc xem lại. Đây là quy mô vấn đề, chưa phải thời gian app đã tiết kiệm.</p>
+    <p class="verdict"><span class="mark">Làm tiếp</span>, chưa kết luận đạt</p>
+    <ul class="points">
+      <li>Đo trước → sau: ≥5 phiên A4 với ≥3 học viên L3 ngoài nhóm, trên ≥3 đoạn bài.</li>
+      <li>Kiểm lại cách chấm Bé Bot: 2/3 phiếu web báo chấm lệch so với thẻ.</li>
+    </ul>
+  </div>
+  <div class="board">
+    <p class="hero-cap">Chi phí / task thành công</p>
+    <div class="cost-row">
+      <div class="cost"><p class="v">$0,00066</p><p class="l">gemini-3.1-flash-lite</p></div>
+      <div class="cost"><p class="v">$0,0038</p><p class="l">gemini-4-hydrogen</p></div>
+    </div>
+    <p class="stat"><b>Chi phí mỗi tháng</b><br>144 người: $1,16–$6,70<br>431 người: $3,48–$20,05<br>721 người: $5,82–$33,55</p>
+  </div>
+  <p class="src"><span>simulate-2@20261128-125144 · 50 phiên · tính theo 21/23 lượt 2 · cost/cost-estimate.md · validation/log.md</span></p>
+</section>
+
+</main>
+
+<nav class="nav" aria-label="Chuyển trang">
+  <button type="button" id="prev">Trước</button>
+  <span class="count" id="count" aria-live="polite">1 / 5</span>
+  <button type="button" id="next">Sau</button>
+  <span class="hint">← → để chuyển trang</span>
+</nav>
+
+<script>
+  const slides = [...document.querySelectorAll(".deck .slide")];
+  document.documentElement.style.setProperty("--total", `"${slides.length}"`);
+  const prev = document.getElementById("prev"), next = document.getElementById("next"), count = document.getElementById("count");
+  let cur = 0;
+
+  function fit() {
+    const s = Math.min(window.innerWidth / 1920, (window.innerHeight - 76) / 1080);
+    document.documentElement.style.setProperty("--s", String(s));
+  }
+  function show(n) {
+    cur = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((el, k) => {
+      el.classList.toggle("on", k === cur);
+      el.setAttribute("aria-hidden", String(k !== cur));
+    });
+    count.textContent = `${cur + 1} / ${slides.length}`;
+    prev.disabled = cur === 0;
+    next.disabled = cur === slides.length - 1;
+    history.replaceState(null, "", `#${cur + 1}`);
+  }
+  prev.addEventListener("click", () => show(cur - 1));
+  next.addEventListener("click", () => show(cur + 1));
+  window.addEventListener("keydown", (e) => {
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+    else if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+    else if (e.key === "Home") show(0);
+    else if (e.key === "End") show(slides.length - 1);
+  });
+  window.addEventListener("resize", fit);
+  window.addEventListener("hashchange", () => show((parseInt(location.hash.slice(1), 10) || 1) - 1));
+  fit();
+  show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

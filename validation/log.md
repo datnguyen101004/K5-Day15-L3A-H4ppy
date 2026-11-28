@@ -14,6 +14,8 @@
 
 Mã đoạn: `A4-01` · `chatbot_is_app_around_model` · `temperature_stability_not_truth` · `react_reasoning_acting_pattern` · `cot_task_fit` · `threshold_by_error_cost`
 
+Phân bổ 5 phiên đề xuất, **chưa phải dữ liệu**: P01 làm chatbot và temperature; P02 làm temperature và ReAct; P03 làm chatbot. Mã tương ứng: `chatbot_is_app_around_model`, `temperature_stability_not_truth`, `react_reasoning_acting_pattern`. Chỉ điền bảng khi đã nhận đáp án lần đầu từ học viên L3 ngoài nhóm.
+
 | # | Người | Mã đoạn | Trước (A/B/C) | Sau (A/B/C) | Ghi chú (số lượt, kết thúc bằng CHOT / TU_CHOI, chỗ học viên vướng) |
 |---|---|---|---|---|---|
 | 1 | | | | | |
@@ -22,7 +24,7 @@ Mã đoạn: `A4-01` · `chatbot_is_app_around_model` · `temperature_stability_
 | 4 | | | | | |
 | 5 | | | | | |
 
-Kết quả (`tong`): Trước __/__ · Sau __/__ · __ phiên · __ học viên · __ đoạn bài
+Kết quả (`tong`): **Chưa có phiên A4 đủ dữ liệu trước/sau**; chưa báo tỉ lệ.
 
 ## Người dùng thử *(bonus)*
 
@@ -30,7 +32,7 @@ Kết quả (`tong`): Trước __/__ · Sau __/__ · __ phiên · __ học viên
 > Không ghi tên: ghi vai. Hành vi quan sát được nặng hơn lời nói; toàn lời khen = phiên chưa đạt, giao việc khó hơn.
 > Người dùng thử **không thay được** bằng chứng pain ở `evidence/`.
 
-> Sản phẩm thử: **Lớp học tranh tài** (app web `classroom/`), không phải luồng A4 dòng lệnh ở trên. Nguồn: form "Khảo sát trải nghiệm Lớp học tranh tài", 3 phiếu ngày 28/11/2026, bản xuất không có tên / email: `validation/khao-sat-lop-hoc-tranh-tai.csv`. Cột *Quan sát* là lỗi **người thử tự báo** qua form, nhóm không ngồi quan sát trực tiếp. Điểm 1–5: dễ dùng / giúp học / tin nhận xét của cô Linh.
+> Sản phẩm thử: **Lớp học tranh tài** (app web `classroom/`), không phải luồng A4 dòng lệnh ở trên. Nguồn: form "Khảo sát trải nghiệm Lớp học tranh tài", 3 phiếu ngày 28/11/2026. Bản trong `data/` và [bản lưu của hồ sơ](khao-sat-lop-hoc-tranh-tai.csv) có cùng 3 phiếu, không cộng dồn. Các lỗi bên dưới do người thử tự báo; nhóm không quan sát trực tiếp. Điểm 1–5: dễ dùng / giúp học / tin nhận xét của cô Linh.
 
 | Người thử (vai) | Việc giao (theo kết quả, không theo nút) | Quan sát (làm gì đầu tiên, chỗ do dự, chỗ hiểu sai) | Trích nguyên văn | Mức nghiêm trọng (cao / vừa / thấp) |
 |---|---|---|---|---|
@@ -42,8 +44,9 @@ Câu hỏi sau: *"Nếu mai không được dùng nữa, bạn thấy: rất ti�
 
 ## Tổng hợp
 
-- Chủ đề lặp nhiều nhất: **cô Linh chấm lệch so với nội dung thẻ** — 2/3 phiếu, theo cả hai chiều (khen khi thẻ thiếu ý ở phiếu 1, cho 0/10 khi thẻ có ý ở phiếu 3). Điểm "tin nhận xét của cô Linh" thấp nhất trong 3 tiêu chí (4 / 5 / 3). Đây cùng loại rủi ro với `khong_xac_nhan_sai` ở luồng A4 (`spec.md` §9).
-- Sửa gì trước demo (ghi `spec.md` §10): đề xuất sửa lỗi kẹt trận (chặn cả luồng đấu) và chấm lệch của cô Linh — *nhóm chưa quyết*.
-- Giữ gì và vì sao: luồng đọc slide → viết thẻ → đấu → xem lại kiến thức thiếu kèm số slide (phiếu 1 và 3 đều nêu là điều thích nhất); tour Hướng dẫn bám đúng nút / tab (phiếu 3).
-- Để dành sau: chữ "null", toast, ô đối thủ, "Nhắc bài" ở mọi câu.
-- Giới hạn: 3 phiếu tự báo, 2/3 người chọn vai "Khác" — **chưa ghi rõ có phải người ngoài nhóm không**; chưa có quan sát hành vi trực tiếp.
+- **Phạm vi:** 3/3 phiếu có dùng Đấu trường, 2/3 dùng Kiểm tra cuối, 3/3 muốn dùng để ôn trước buổi thực hành. Điểm trung bình: dễ dùng 4,67/5 · cảm nhận giúp học 4,67/5 · tin nhận xét 4,00/5. Đây là phản hồi tự báo, không phải điểm kiểm tra kiến thức.
+- **Điểm cần ưu tiên:** 2/3 phiếu báo cô Linh chấm lệch so với thẻ, theo hai chiều: khen khi thiếu ý và cho 0 khi người thử thấy thẻ có ý đúng.
+- **Đã xử lý từ phiếu 1:** bỏ chữ `null` ở Kiểm tra cuối, chặn lặp Lời thoại khi đổi tab, toast lưu thẻ có viền xanh và tự đóng sau 5 giây. Bé Bot được chấm dựa trên các câu trích từ thẻ; đã thêm kiểm thử tình huống thiếu vế so sánh chatbot ở slide 2. Ba lỗi giao diện đã được kiểm tra trên trình duyệt local trước khi phát hành. Không suy ra rằng mọi trường hợp chấm lệch đã hết.
+- **Cần kiểm lại trước:** lỗi kẹt ở bước chọn thẻ sau khi mở trận với Sổ tay trống, mất bản nháp thẻ thứ hai khi lưu thẻ thứ nhất, và trường hợp có ý đúng nhưng bị 0 điểm. Tìm kiếm không có kết quả, mở rộng Nhắc bài và thao tác chọn đối thủ là các góp ý còn lại; chưa xác nhận đã sửa.
+- **Giữ:** luồng đọc slide → viết thẻ → đấu → xem lại kiến thức thiếu kèm số slide (phiếu 1 và 3 thích cách học/ôn lại); tour Hướng dẫn bám đúng nút và tab (phiếu 3).
+- **Giới hạn:** chưa xác nhận cả 3 phiếu đều ngoài nhóm; không có quan sát trực tiếp hay câu hỏi “rất tiếc / hơi tiếc / không sao”. Ghi nhận đã dùng thử và có feedback, chưa đánh dấu hoàn thành quy trình bonus hoặc điều kiện cứng (4).

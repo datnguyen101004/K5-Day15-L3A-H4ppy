@@ -6,7 +6,7 @@
 
 ## 1. Đầu vào
 
-- **Persona** (`cost/personas.yaml`): 3 kiểu — `hoc_it` 25% · 4 phiên/tháng · 1 lượt; `hoc_vua` 60% · 8 phiên/tháng · 1 lượt; `hoc_nhieu` 15% · 24 phiên/tháng · 3 lượt. Nguồn: khảo sát câu 3 (số bài/tuần) và câu 5 (số lượt trả lời bạn học AI), n = 20, `evidence/survey/results.csv`; trần 3 lượt theo `canvas.md` dòng 6; ×4 tuần/tháng và 1 phiên/bài *(tự ước tính)*
+- **Persona** (`cost/personas.yaml`): 3 kiểu — `hoc_it` 25% · 2 phiên/tháng · 1 lượt; `hoc_vua` 60% · 10 phiên/tháng · 1 lượt; `hoc_nhieu` 15% · 23 phiên/tháng · 3 lượt. Nguồn: khảo sát câu 3 (trung bình số bài/tuần theo nhóm) và câu 5 (trung vị số lượt trả lời bạn học AI), n = 20, `evidence/survey/results.csv`; trần 3 lượt theo `canvas.md` dòng 6; ×4 tuần/tháng và 1 phiên/bài *(tự ước tính)*
 - **Số người dùng thật** 3 kịch bản: thấp 144 · cơ sở 431 · cao 721. Nguồn: `data/preclass` 05–25/11/2026 — 431 học viên mở video; 144 = 431 − 287 người mở video mà không gửi chat nào; 721 tổng tài khoản (`evidence/data-mining.md`)
 - **Giá** ≥2 mức model (từ `further-reading/model-prices.md` của repo đề, BTC xem 25/11/2026): `gemini-3.1-flash-lite` (Nhỏ) 0.25 / 1.50 USD mỗi 1M token vào / ra · `gemini-4-hydrogen` (Lớn) 1.50 / 7.50 — link https://ai.google.dev/gemini-api/docs/pricing
 - **Tỉ lệ đạt** dùng để tính: 21/23 (91%) — lượt 2 `run-2@20261128-115432` (`--rate-from eval/run-2.csv`)
